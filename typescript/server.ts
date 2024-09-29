@@ -13,5 +13,5 @@ app.use(cookieParser());
 const port = process.env.PORT || 8080;
 
 app.listen(port, () => {
-    console.log(`App started at http://localhost:${port}`);
-  });
+  console.log(`App started at http://localhost:${port}`);
+});

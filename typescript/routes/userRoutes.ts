@@ -4,6 +4,4 @@ import { createUserSchema } from "../schema/userSchema";
 
 const userRouter: Router = Router();
 
-userRouter.post(
-    "/api/users",
-)
+userRouter.post("/api/users");
