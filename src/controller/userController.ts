@@ -18,8 +18,7 @@ export async function createUserHandler(
   } catch (e: any) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2002") {
-        // Unique constraint violation
-        return res.status(409).json({
+        res.status(409).json({
           error: "Account already exists",
         });
       }
