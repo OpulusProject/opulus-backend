@@ -9,6 +9,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@middleware/*": ["./src/middleware/*"],
+      "@prisma/*": ["./prisma/*"],
       "@routes/*": ["./src/routes/*"],
       "@schema/*": ["./src/schema/*"],
       "@services/*": ["./src/services/*"]

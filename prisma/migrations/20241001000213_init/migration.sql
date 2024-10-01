@@ -4,15 +4,9 @@ CREATE TABLE "User" (
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "emailVerified" BOOLEAN NOT NULL DEFAULT false,
     "password" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "deactivatedAt" TIMESTAMP(3),
-    "deactivatedReason" TEXT,
-    "subscriptionType" TEXT NOT NULL DEFAULT 'free',
-    "provider" TEXT,
-    "providerId" TEXT,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
