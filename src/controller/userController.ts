@@ -11,20 +11,20 @@ export async function createUserHandler(
 
   try {
     const user = await createUser(body);
-    res.status(201).json({
+    return res.status(201).json({
       message: "User created successfully",
       user,
     });
   } catch (e: any) {
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
       if (e.code === "P2002") {
-        res.status(409).json({
+        return res.status(409).json({
           error: "Account already exists",
         });
       }
     }
 
-    res.status(500).json({
+    return res.status(500).json({
       error: "An unexpected error occurred",
       details: e.message,
     });
