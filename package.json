@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only typescript/server.ts"
+    "server": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts",
+    "prisma-studio": "npx prisma studio"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.7",
@@ -8,15 +9,16 @@
     "@types/node": "^22.2.0",
     "prisma": "^5.19.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "ts-node-dev": "^2.0.0",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.5.4",
+    "eslint": "^9.11.1"
   },
   "dependencies": {
     "@prisma/client": "^5.19.1",
     "body-parser": "^1.20.3",
     "cookie-parser": "^1.4.6",
-    "eslint": "^9.11.1",
     "express": "^4.21.0",
-    "ts-node-dev": "^2.0.0",
     "zod": "^3.23.8"
   }
 }
