@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { CreateUserInput } from "@/schema/userSchema";
-import { createUser } from "@/service/userService";
+import { CreateUserInput } from "@schema/userSchema";
+import { createUser } from "@service/userService";
 import { Prisma } from "@prisma/client";
 
 export async function createUserHandler(

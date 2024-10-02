@@ -8,12 +8,12 @@
     "strict": true,
     "skipLibCheck": true,
     "paths": {
-      "@/*": ["./src/*"],
       "@middleware/*": ["./src/middleware/*"],
       "@prisma/*": ["./prisma/*"],
       "@routes/*": ["./src/routes/*"],
       "@schema/*": ["./src/schema/*"],
-      "@services/*": ["./src/services/*"]
+      "@service/*": ["./src/service/*"],
+      "@utils/*": ["./src/utils/*"]
     }
   }
 }
