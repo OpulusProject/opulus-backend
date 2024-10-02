@@ -1,7 +1,6 @@
 {
   "scripts": {
-    "server": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts",
-    "prisma-studio": "npx prisma studio"
+    "server": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.7",

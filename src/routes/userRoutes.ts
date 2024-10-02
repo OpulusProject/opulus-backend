@@ -3,7 +3,7 @@ import validateResource from "@/middleware/validateResource";
 import { createUserSchema } from "@/schema/userSchema";
 import { createUserHandler } from "@/controller/userController";
 
-const userRouter: Router = Router();
+const userRouter = Router();
 
 userRouter.post(
   "/users",
