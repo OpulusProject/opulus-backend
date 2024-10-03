@@ -15,10 +15,10 @@ export async function createUser(
   });
 }
 
-export async function findUserById(input: Pick<User, "id">) {
+export async function findUserById(id: number) {
   return await prisma.user.findUnique({
     where: {
-      id: input.id,
+      id
     },
   });
 }

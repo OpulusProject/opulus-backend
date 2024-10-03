@@ -1,7 +1,7 @@
 import { Router } from "express";
-import validateResource from "@/middleware/validateResource";
-import { createUserSchema } from "@/schema/userSchema";
-import { createUserHandler } from "@/controller/userController";
+import validateResource from "@middleware/validateResource";
+import { createUserSchema } from "@schema/userSchema";
+import { createUserHandler } from "@controller/userController";
 
 const userRouter = Router();
 

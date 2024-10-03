@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 
-import router from "@/routes/router";
+import router from "@routes/router";
 
 const app = express();
 app.use(express.json());
