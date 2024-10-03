@@ -17,26 +17,26 @@ export async function createSessionHandler(
 
   const user = await findUserByEmail(email);
   if (!user) {
-    res.send("User does not exist.");
+    res.status(401).send("Invalid email or password.");
     return;
   }
 
-  const isValid = argon2.verify(user.password, password);
+  const isValid = await argon2.verify(user.password, password);
   if (!isValid) {
-    res.send("Password is invalid.");
+    res.status(401).send("Invalid email or password.");
     return;
   }
 
   const accessToken = signAccessToken(user);
   const refreshToken = await signRefreshToken(user.id);
 
-  res.send({ accessToken, refreshToken });
+  res.status(200).send({ accessToken, refreshToken });
 }
 
 export async function refreshAccessTokenHandler(req: Request, res: Response) {
   const refreshToken = req.get("headers.x-refresh");
   if (!refreshToken) {
-    res.send("Refresh token is missing.");
+    res.status(400).send("Refresh token is missing.");
     return;
   }
 
