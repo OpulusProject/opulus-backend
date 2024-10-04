@@ -38,3 +38,7 @@ export async function createUserHandler(
     });
   }
 }
+
+export async function getCurrentUserHandler(req: Request, res: Response) {
+  res.send(res.locals.user);
+}

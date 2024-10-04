@@ -1,7 +1,11 @@
 import { Router } from "express";
+import {
+  createUserHandler,
+  getCurrentUserHandler,
+} from "@controller/userController";
+import requireUser from "@middleware/requireUser";
 import validateResource from "@middleware/validateResource";
 import { createUserSchema } from "@schema/userSchema";
-import { createUserHandler } from "@controller/userController";
 
 const userRouter = Router();
 
@@ -10,5 +14,7 @@ userRouter.post(
   validateResource(createUserSchema),
   createUserHandler
 );
+
+userRouter.get("/users/me", requireUser, getCurrentUserHandler);
 
 export default userRouter;

@@ -11,6 +11,19 @@ export async function createSession(userId: number) {
   });
 }
 
+export async function updateSession({
+  sessionId,
+  valid,
+}: {
+  sessionId: number;
+  valid: boolean;
+}) {
+  return prisma.session.update({
+    where: { id: sessionId },
+    data: { valid },
+  });
+}
+
 export async function findSessionById(id: number) {
   return await prisma.session.findUnique({
     where: {

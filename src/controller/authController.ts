@@ -4,6 +4,7 @@ import {
   findSessionById,
   signAccessToken,
   signRefreshToken,
+  updateSession,
 } from "@service/authService";
 import { findUserByEmail, findUserById } from "@service/userService";
 import argon2 from "argon2";
@@ -63,4 +64,25 @@ export async function refreshAccessTokenHandler(req: Request, res: Response) {
 
   const accessToken = signAccessToken(user);
   res.send({ accessToken });
+}
+
+export async function invalidateSessionHandler(req: Request, res: Response) {
+  const refreshToken = req.get("headers.x-refresh");
+  if (!refreshToken) {
+    res.status(400).send("Refresh token is missing.");
+    return;
+  }
+
+  const decoded = verifyJwt<{ session: number }>(
+    refreshToken,
+    "refreshTokenPublicKey"
+  );
+  if (!decoded) {
+    res.status(401).send("Refresh token is invalid.");
+    return;
+  }
+
+  await updateSession({ sessionId: decoded.session, valid: false });
+
+  res.status(200).send("Logged out successfully.");
 }
