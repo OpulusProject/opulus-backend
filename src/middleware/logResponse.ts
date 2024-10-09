@@ -11,7 +11,7 @@ const logResponse = (req: Request, res: Response, next: NextFunction) => {
       responseBody: body,
     });
 
-    return originalSend.call(this, body); // Pass only the `body` argument to the original `send` method
+    return originalSend.call(this, body);
   };
 
   next();
