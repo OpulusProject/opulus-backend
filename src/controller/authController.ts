@@ -1,9 +1,6 @@
 import { Request, Response } from "express";
 import { CreateSessionInput } from "@schema/authSchema";
-import {
-  signAccessToken,
-  signRefreshToken,
-} from "@service/authService";
+import { signAccessToken, signRefreshToken } from "@service/authService";
 import { findUserByEmail, findUserById } from "@service/userService";
 import argon2 from "argon2";
 import { verifyJwt } from "@utils/jwt";
@@ -29,11 +26,21 @@ export async function createSessionHandler(
   const accessToken = signAccessToken(user);
   const refreshToken = signRefreshToken(user);
 
-  res.status(200).send({ accessToken, refreshToken });
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 15,
+  });
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 90,
+  });
+
+  res.status(200).send();
 }
 
 export async function refreshAccessTokenHandler(req: Request, res: Response) {
-  const refreshToken = req.get("headers.x-refresh");
+  const refreshToken = req.cookies.refreshToken;
   if (!refreshToken) {
     res.status(400).send("Refresh token is missing.");
     return;
@@ -55,5 +62,11 @@ export async function refreshAccessTokenHandler(req: Request, res: Response) {
   }
 
   const accessToken = signAccessToken(user);
-  res.send({ accessToken });
+
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 15,
+  });
+
+  res.status(200).send();
 }
