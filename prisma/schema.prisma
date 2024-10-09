@@ -8,21 +8,11 @@ datasource db {
 }
 
 model User {
-  id               Int      @id @default(autoincrement())
-  firstName        String
-  lastName         String
-  email            String   @unique
-  password         String
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  Session Session[]
-}
-
-model Session {
   id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
-  valid     Boolean  @default(true)
+  firstName String
+  lastName  String
+  email     String   @unique
+  password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
