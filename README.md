@@ -1,7 +1,6 @@
 ## Prisma
 Generate Prisma client:
 ```bash
-cd backend/typescript
 npx prisma generate
 ```
 

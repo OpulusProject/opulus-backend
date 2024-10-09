@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 
 import deserializeUser from "@middleware/deserializeUser";
 import router from "@routes/router";
+import logResponse from "@middleware/logResponse";
 
 const app = express();
 app.use(express.json());
@@ -15,6 +16,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(deserializeUser);
+
+app.use(logResponse)
 
 app.use("/api", router);
 
