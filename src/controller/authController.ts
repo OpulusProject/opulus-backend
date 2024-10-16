@@ -39,6 +39,20 @@ export async function createSessionHandler(
   res.status(200).send();
 }
 
+export async function invalidateSessionHandler(req: Request, res: Response) {
+   res.cookie("accessToken", "", {
+     httpOnly: true,
+     expires: new Date(0),
+   });
+
+   res.cookie("refreshToken", "", {
+     httpOnly: true,
+     expires: new Date(0),
+   });
+
+   res.status(200).send();
+}
+
 export async function refreshAccessTokenHandler(req: Request, res: Response) {
   const refreshToken = req.cookies.refreshToken;
   if (!refreshToken) {
