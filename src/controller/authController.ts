@@ -40,17 +40,10 @@ export async function createSessionHandler(
 }
 
 export async function invalidateSessionHandler(req: Request, res: Response) {
-   res.cookie("accessToken", "", {
-     httpOnly: true,
-     expires: new Date(0),
-   });
+  res.clearCookie("accessToken");
+  res.clearCookie("refreshToken");
 
-   res.cookie("refreshToken", "", {
-     httpOnly: true,
-     expires: new Date(0),
-   });
-
-   res.status(200).send();
+  res.status(200).send();
 }
 
 export async function refreshAccessTokenHandler(req: Request, res: Response) {
