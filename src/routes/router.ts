@@ -1,6 +1,7 @@
 import { Router } from "express";
 import authRouter from "@routes/authRoutes";
 import userRouter from "@routes/userRoutes";
+import plaidRouter from "@routes/plaidRoutes";
 
 const router: Router = Router();
 
@@ -9,6 +10,7 @@ router.get("/healthcheck", (req, res) => {
 });
 
 router.use(authRouter);
+router.use(plaidRouter);
 router.use(userRouter);
 
 export default router;
