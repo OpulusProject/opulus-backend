@@ -26,7 +26,7 @@ const plaid = new PlaidApi(configuration);
 
 export async function createLinkToken(userId: string) {
   const products: Products[] = [Products.Assets, Products.Transactions];
-  const country_codes: CountryCode[] = [CountryCode.Us];
+  const country_codes: CountryCode[] = [CountryCode.Ca];
   const request: LinkTokenCreateRequest = {
     user: {
       client_user_id: userId,
