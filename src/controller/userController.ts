@@ -8,16 +8,14 @@ export async function createUserHandler(
   req: Request<{}, {}, CreateUserInput>,
   res: Response
 ): Promise<void> {
-  const body = req.body;
+  const { email, password } = req.body;
 
   try {
-    const user = await createUser(body);
+    const user = await createUser(email, password);
     res.status(201).json({
       message: "User created successfully",
       user: {
         id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
         email: user.email,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
