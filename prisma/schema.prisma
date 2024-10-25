@@ -7,12 +7,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum OnboardingStatus {
+  IN_PROGRESS
+  COMPLETED
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   firstName String?
   lastName  String?
   email     String   @unique
   password  String
+  onboardingStatus OnboardingStatus @default(IN_PROGRESS)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
