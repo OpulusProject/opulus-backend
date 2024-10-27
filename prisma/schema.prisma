@@ -21,4 +21,9 @@ model User {
   onboardingStatus OnboardingStatus @default(IN_PROGRESS)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  accounts  Accounts[]
+}
+
+model Account {
+
 }
