@@ -25,5 +25,13 @@ model User {
 }
 
 model Account {
-
+  accountId String  @id@unique
+  balances  Balances [] //need to create model
+  mask      String?
+  name      String?
+  officialName  String?
+  type      String
+  subtype   String?
+  verificationStatus  String
 }
+
