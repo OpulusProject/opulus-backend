@@ -21,12 +21,12 @@ model User {
   onboardingStatus OnboardingStatus @default(IN_PROGRESS)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  accounts  Accounts[]
+  accounts  Account[]
 }
 
 model Account {
   accountId String  @id@unique
-  balances  Balances [] //need to create model
+  balances  Balances[] //need to create model
   mask      String?
   name      String?
   officialName  String?
@@ -35,3 +35,9 @@ model Account {
   verificationStatus  String
 }
 
+model Balance {
+  current   Decimal?
+  isoCurrencyCode String?
+  unofficialCurrencyCode  String?
+  lastUpdate  DateTime?
+}
