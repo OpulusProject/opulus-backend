@@ -1,9 +1,4 @@
 ## Prisma
-Generate Prisma client:
-```bash
-npx prisma generate
-```
-
 Synchronize Prisma schema with database schema:
 ```bash
 npx prisma db push
