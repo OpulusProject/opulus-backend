@@ -13,7 +13,7 @@ enum OnboardingStatus {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id   String @id @default(cuid())
   firstName String?
   lastName  String?
   email     String   @unique
@@ -21,23 +21,30 @@ model User {
   onboardingStatus OnboardingStatus @default(IN_PROGRESS)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  accounts  Account[]
+
+  account Account[]
 }
 
 model Account {
-  accountId String  @id@unique
-  balances  Balances[] //need to create model
+  id String @id
+  userId String
   mask      String?
   name      String?
   officialName  String?
   type      String
   subtype   String?
-  verificationStatus  String
+
+  user User @relation(fields: [userId], references: [id])
+
+  balance Balance[]
 }
 
 model Balance {
+  accountId String @id 
   current   Decimal?
   isoCurrencyCode String?
   unofficialCurrencyCode  String?
   lastUpdate  DateTime?
+
+  account Account @relation(fields: [accountId], references: [id])
 }
