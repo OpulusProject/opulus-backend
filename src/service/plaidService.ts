@@ -43,10 +43,10 @@ export async function createLinkToken(userId: string) {
   return await plaid.linkTokenCreate(request);
 }
 
-export async function createAccessToken(publicToken: string) {
+export async function exchangePublicToken(publicToken: string) {
   const request: ItemPublicTokenExchangeRequest = {
     public_token: publicToken,
-  }
+  };
 
   return await plaid.itemPublicTokenExchange(request);
 }
@@ -54,7 +54,7 @@ export async function createAccessToken(publicToken: string) {
 export async function getPlaidAccounts(accessToken: string) {
   const request: AccountsGetRequest = {
     access_token: accessToken,
-  }
+  };
 
   return await plaid.accountsGet(request);
 }
