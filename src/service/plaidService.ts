@@ -1,6 +1,9 @@
 import {
+  AccountsGetRequest,
   Configuration,
   CountryCode,
+  ItemPublicTokenCreateRequest,
+  ItemPublicTokenExchangeRequest,
   LinkTokenCreateRequest,
   PlaidApi,
   PlaidEnvironments,
@@ -38,4 +41,20 @@ export async function createLinkToken(userId: string) {
   };
 
   return await plaid.linkTokenCreate(request);
+}
+
+export async function createAccessToken(publicToken: string) {
+  const request: ItemPublicTokenExchangeRequest = {
+    public_token: publicToken,
+  }
+
+  return await plaid.itemPublicTokenExchange(request);
+}
+
+export async function getPlaidAccounts(accessToken: string) {
+  const request: AccountsGetRequest = {
+    access_token: accessToken,
+  }
+
+  return await plaid.accountsGet(request);
 }
