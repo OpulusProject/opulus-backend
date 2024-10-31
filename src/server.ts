@@ -1,13 +1,13 @@
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import dotenv from "dotenv";
+import { config } from "dotenv";
 import express from "express";
+
+config();
 
 import deserializeUser from "@middleware/deserializeUser";
 import router from "@routes/router";
-
-dotenv.config();
 
 const app = express();
 
