@@ -1,11 +1,12 @@
-import { Request, Response } from "express";
-import { CreateUserInput } from "@schema/userSchema";
-import { createUser } from "@service/userService";
 import { Prisma } from "@prisma/client";
+import { Request, Response } from "express";
 import { omit } from "lodash";
 
+import { CreateUserInput } from "@schema/userSchema";
+import { createUser } from "@service/userService";
+
 export async function createUserHandler(
-  req: Request<{}, {}, CreateUserInput>,
+  req: Request<object, object, CreateUserInput>,
   res: Response,
 ): Promise<void> {
   const { email, password } = req.body;
@@ -38,7 +39,7 @@ export async function createUserHandler(
   }
 }
 
-export async function getCurrentUserHandler(req: Request, res: Response) {
+export function getCurrentUserHandler(req: Request, res: Response) {
   const user = res.locals.user;
   const payload = omit(user, user.password);
   res.send(payload);

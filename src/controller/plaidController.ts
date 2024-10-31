@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
-import { createLinkToken } from "@service/plaidService";
 import { PlaidError } from "plaid";
+
+import { createLinkToken } from "@service/plaidService";
 
 export async function createLinkTokenHandler(req: Request, res: Response) {
   try {

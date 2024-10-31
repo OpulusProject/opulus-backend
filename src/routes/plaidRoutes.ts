@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import { createLinkTokenHandler } from "@controller/plaidController";
 import requireUser from "@middleware/requireUser";
 

@@ -1,7 +1,8 @@
 import { Router } from "express";
+
 import authRouter from "@routes/authRoutes";
-import userRouter from "@routes/userRoutes";
 import plaidRouter from "@routes/plaidRoutes";
+import userRouter from "@routes/userRoutes";
 
 const router: Router = Router();
 

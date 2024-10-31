@@ -1,12 +1,13 @@
+import argon2 from "argon2";
 import { Request, Response } from "express";
+
 import { CreateSessionInput } from "@schema/authSchema";
 import { signAccessToken, signRefreshToken } from "@service/authService";
 import { findUserByEmail, findUserById } from "@service/userService";
-import argon2 from "argon2";
 import { verifyJwt } from "@utils/jwt";
 
 export async function createSessionHandler(
-  req: Request<{}, {}, CreateSessionInput>,
+  req: Request<object, object, CreateSessionInput>,
   res: Response,
 ) {
   const { email, password } = req.body;
@@ -39,7 +40,7 @@ export async function createSessionHandler(
   res.status(200).send();
 }
 
-export async function invalidateSessionHandler(req: Request, res: Response) {
+export function invalidateSessionHandler(req: Request, res: Response) {
   res.clearCookie("accessToken");
   res.clearCookie("refreshToken");
 

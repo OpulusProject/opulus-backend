@@ -1,4 +1,6 @@
-import { object, string, TypeOf } from "zod";
+import { TypeOf, object, string } from "zod";
+
+export type CreateSessionInput = TypeOf<typeof createSessionSchema>["body"];
 
 export const createSessionSchema = object({
   body: object({
@@ -10,5 +12,3 @@ export const createSessionSchema = object({
     }).min(6, "Invalid email or password"),
   }),
 });
-
-export type CreateSessionInput = TypeOf<typeof createSessionSchema>["body"];
