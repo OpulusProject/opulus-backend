@@ -1,12 +1,4 @@
 module.exports = {
-  root: true,
-  env: { node: true, es2020: true },
-  extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended-type-checked",
-    "prettier",
-  ],
-  ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     ecmaVersion: "latest",
@@ -14,8 +6,46 @@ module.exports = {
     project: "./tsconfig.json",
     tsconfigRootDir: __dirname,
   },
-  plugins: ["prettier", "simple-import-sort"],
+  env: { node: true, es2020: true },
+  plugins: ["prettier", "import", "sort-exports"],
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "prettier",
+  ],
   rules: {
+    "sort-imports": [
+      "error",
+      {
+        ignoreCase: false,
+        ignoreDeclarationSort: true,
+        ignoreMemberSort: false,
+        memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
+        allowSeparatedGroups: false,
+      },
+    ],
+    "import/no-unresolved": "error",
+    "import/order": [
+      "error",
+      {
+        groups: [
+          "builtin",
+          "external",
+          "internal",
+          ["sibling", "parent"],
+          "index",
+          "unknown",
+        ],
+        "newlines-between": "always",
+        alphabetize: {
+          order: "asc",
+          caseInsensitive: true,
+        },
+      },
+    ],
+    "sort-exports/sort-exports": ["error", {"sortDir": "asc"}],
     "@typescript-eslint/no-misused-promises": [
       2,
       {
@@ -24,8 +54,6 @@ module.exports = {
         },
       },
     ],
-    "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error",
     "prettier/prettier": [
       "error",
       {
@@ -44,4 +72,12 @@ module.exports = {
       },
     ],
   },
+  settings: {
+    "import/resolver": {
+      typescript: {
+        project: "./tsconfig.json",
+      },
+    },
+  },
+  ignorePatterns: ["dist", ".eslintrc.cjs"],
 };
