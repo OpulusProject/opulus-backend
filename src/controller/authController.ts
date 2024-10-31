@@ -7,7 +7,7 @@ import { verifyJwt } from "@utils/jwt";
 
 export async function createSessionHandler(
   req: Request<{}, {}, CreateSessionInput>,
-  res: Response
+  res: Response,
 ) {
   const { email, password } = req.body;
 
@@ -55,7 +55,7 @@ export async function refreshAccessTokenHandler(req: Request, res: Response) {
 
   const decoded = verifyJwt<{ id: number }>(
     refreshToken,
-    "refreshTokenPublicKey"
+    "refreshTokenPublicKey",
   );
   if (!decoded) {
     res.status(401).send("Refresh token is invalid.");

@@ -4,11 +4,11 @@ import config from "config";
 export function signJwt(
   object: Object,
   keyName: "accessTokenPrivateKey" | "refreshTokenPrivateKey",
-  options?: jwt.SignOptions | undefined
+  options?: jwt.SignOptions | undefined,
 ) {
   const signingKey = Buffer.from(
     config.get<string>(keyName),
-    "base64"
+    "base64",
   ).toString("ascii");
 
   return jwt.sign(object, signingKey, {
@@ -19,10 +19,10 @@ export function signJwt(
 
 export function verifyJwt<T>(
   token: string,
-  keyName: "accessTokenPublicKey" | "refreshTokenPublicKey"
+  keyName: "accessTokenPublicKey" | "refreshTokenPublicKey",
 ): T | null {
   const publicKey = Buffer.from(config.get<string>(keyName), "base64").toString(
-    "ascii"
+    "ascii",
   );
 
   try {

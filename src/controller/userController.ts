@@ -6,7 +6,7 @@ import { omit } from "lodash";
 
 export async function createUserHandler(
   req: Request<{}, {}, CreateUserInput>,
-  res: Response
+  res: Response,
 ): Promise<void> {
   const { email, password } = req.body;
 

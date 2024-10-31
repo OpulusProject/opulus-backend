@@ -11,7 +11,7 @@ export async function createLinkTokenHandler(req: Request, res: Response) {
       link_token: linkTokenResponse.data.link_token,
     });
   } catch (error) {
-    if ((error as PlaidError)) {
+    if (error as PlaidError) {
       const plaidError = error as PlaidError;
       console.error("Plaid error:", plaidError);
     } else {

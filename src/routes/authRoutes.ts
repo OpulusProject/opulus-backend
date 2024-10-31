@@ -13,7 +13,7 @@ const authRouter = Router();
 authRouter.post(
   "/sessions",
   validateResource(createSessionSchema),
-  createSessionHandler
+  createSessionHandler,
 );
 
 authRouter.post("/sessions/invalidate", invalidateSessionHandler);
