@@ -1,3 +1,4 @@
+import { User } from "@prisma/client";
 import { Request, Response } from "express";
 import { PlaidError } from "plaid";
 
@@ -5,7 +6,8 @@ import { createLinkToken } from "@service/plaidService";
 
 export async function createLinkTokenHandler(req: Request, res: Response) {
   try {
-    const userId: string = res.locals.user.id.toString();
+    const user = res.locals.user as User;
+    const userId = user.id.toString();
     const linkTokenResponse = await createLinkToken(userId);
 
     res.status(200).json({

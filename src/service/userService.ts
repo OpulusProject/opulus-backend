@@ -1,4 +1,4 @@
-import argon2 from "argon2";
+import { hash } from "argon2";
 
 import prisma from "@prisma/index";
 
@@ -6,7 +6,7 @@ export async function createUser(email: string, password: string) {
   return await prisma.user.create({
     data: {
       email,
-      password: await argon2.hash(password),
+      password: await hash(password),
     },
   });
 }
@@ -19,7 +19,7 @@ export async function findUserByEmail(email: string) {
   });
 }
 
-export async function findUserById(id: number) {
+export async function findUserById(id: string) {
   return await prisma.user.findUnique({
     where: {
       id,

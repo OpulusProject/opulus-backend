@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 import express from "express";
 
 import deserializeUser from "@middleware/deserializeUser";
-import logResponse from "@middleware/logResponse";
 import router from "@routes/router";
 
 dotenv.config();
@@ -26,7 +25,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(deserializeUser);
-app.use(logResponse);
 
 app.use("/api", router);
 
