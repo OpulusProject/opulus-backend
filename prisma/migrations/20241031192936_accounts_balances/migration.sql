@@ -27,7 +27,7 @@ CREATE TABLE "Account" (
 -- CreateTable
 CREATE TABLE "Balance" (
     "accountId" TEXT NOT NULL,
-    "current" DECIMAL(65,30),
+    "current" DOUBLE PRECISION,
     "isoCurrencyCode" TEXT,
     "unofficialCurrencyCode" TEXT,
     "lastUpdate" TIMESTAMP(3),

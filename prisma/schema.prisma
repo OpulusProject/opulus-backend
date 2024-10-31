@@ -41,7 +41,7 @@ model Account {
 
 model Balance {
   accountId              String    @id
-  current                Decimal?
+  current                Float?
   isoCurrencyCode        String?
   unofficialCurrencyCode String?
   lastUpdate             DateTime?

@@ -45,7 +45,7 @@ module.exports = {
         },
       },
     ],
-    "sort-exports/sort-exports": ["error", {"sortDir": "asc"}],
+    "sort-exports/sort-exports": ["error", { sortDir: "asc" }],
     "@typescript-eslint/no-misused-promises": [
       2,
       {
