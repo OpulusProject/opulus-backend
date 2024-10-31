@@ -1,50 +1,47 @@
 module.exports = {
   root: true,
-  env: { browser: true, es2020: true },
+  env: { node: true, es2020: true },
   extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
-    'plugin:@typescript-eslint/recommended-type-checked',
-    'plugin:react-hooks/recommended',
-    'prettier',
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "prettier",
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
-  parser: '@typescript-eslint/parser',
+  ignorePatterns: ["dist", ".eslintrc.cjs"],
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
+    ecmaVersion: "latest",
+    sourceType: "module",
+    project: "./tsconfig.json",
     tsconfigRootDir: __dirname,
   },
-  plugins: ['react-refresh', 'prettier', 'simple-import-sort'],
+  plugins: ["prettier", "simple-import-sort"],
   rules: {
-    'react/prop-types': 'off',
-    'simple-import-sort/imports': 'error',
-    'simple-import-sort/exports': 'error',
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
-    'prettier/prettier': [
-      'error',
+    "@typescript-eslint/no-misused-promises": [
+      2,
       {
-        endOfLine: 'auto',
+        checksVoidReturn: {
+          attributes: false,
+        },
       },
     ],
-    'no-restricted-imports': [
-      'error',
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ],
+    "no-restricted-imports": [
+      "error",
       {
         patterns: [
           {
-            group: ['./*/', '**../'],
-            message: 'Relative imports are not allowed.',
+            group: ["./*/", "**../"],
+            message: "Relative imports are not allowed.",
           },
         ],
       },
     ],
-  },
-  settings: {
-    react: { version: 'detect' },
   },
 };
