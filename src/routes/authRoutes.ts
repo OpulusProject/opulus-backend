@@ -1,19 +1,20 @@
 import { Router } from "express";
-import validateResource from "@middleware/validateResource";
+
 import {
   createSessionHandler,
   invalidateSessionHandler,
   refreshAccessTokenHandler,
 } from "@controller/authController";
-import { createSessionSchema } from "@schema/authSchema";
 import requireUser from "@middleware/requireUser";
+import validateResource from "@middleware/validateResource";
+import { createSessionSchema } from "@schema/authSchema";
 
 const authRouter = Router();
 
 authRouter.post(
   "/sessions",
   validateResource(createSessionSchema),
-  createSessionHandler
+  createSessionHandler,
 );
 
 authRouter.post("/sessions/invalidate", invalidateSessionHandler);

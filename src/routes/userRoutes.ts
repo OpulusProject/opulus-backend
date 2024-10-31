@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import {
   createUserHandler,
   getCurrentUserHandler,
@@ -12,7 +13,7 @@ const userRouter = Router();
 userRouter.post(
   "/users",
   validateResource(createUserSchema),
-  createUserHandler
+  createUserHandler,
 );
 
 userRouter.get("/users/me", requireUser, getCurrentUserHandler);

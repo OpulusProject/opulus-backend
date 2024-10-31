@@ -1,6 +1,13 @@
 {
+  "name": "opulus-backend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "server": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts"
+    "server": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts",
+    "eslint": "eslint .",
+    "prettier": "prettier .",
+    "format": "npm run prettier -- --write && prisma format"
   },
   "devDependencies": {
     "@types/config": "^3.3.5",
@@ -10,7 +17,14 @@
     "@types/jsonwebtoken": "^9.0.7",
     "@types/lodash": "^4.17.9",
     "@types/node": "^22.2.0",
-    "eslint": "^9.11.1",
+    "@typescript-eslint/eslint-plugin": "^8.12.2",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-sort-exports": "^0.9.1",
+    "prettier": "^3.3.3",
     "prisma": "^5.19.1",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",

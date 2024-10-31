@@ -1,8 +1,10 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnPaste": true, // required
-  "editor.formatOnType": false, // required
-  "editor.formatOnSave": true, // optional
+  "editor.formatOnSave": false,
+  "eslint.validate": ["typescript"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "always"
+  },
   "editor.formatOnSaveMode": "file", // required to format on save
   "files.autoSave": "afterDelay" // optional but recommended
 }

@@ -1,50 +1,83 @@
 module.exports = {
-  root: true,
-  env: { browser: true, es2020: true },
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:react/jsx-runtime',
-    'plugin:@typescript-eslint/recommended-type-checked',
-    'plugin:react-hooks/recommended',
-    'prettier',
-  ],
-  ignorePatterns: ['dist', '.eslintrc.cjs'],
-  parser: '@typescript-eslint/parser',
+  parser: "@typescript-eslint/parser",
   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
+    ecmaVersion: "latest",
+    sourceType: "module",
+    project: "./tsconfig.json",
     tsconfigRootDir: __dirname,
   },
-  plugins: ['react-refresh', 'prettier', 'simple-import-sort'],
+  env: { node: true, es2020: true },
+  plugins: ["prettier", "import", "sort-exports"],
+  extends: [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended-type-checked",
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "prettier",
+  ],
   rules: {
-    'react/prop-types': 'off',
-    'simple-import-sort/imports': 'error',
-    'simple-import-sort/exports': 'error',
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
-    'prettier/prettier': [
-      'error',
+    "sort-imports": [
+      "error",
       {
-        endOfLine: 'auto',
+        ignoreCase: false,
+        ignoreDeclarationSort: true,
+        ignoreMemberSort: false,
+        memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
+        allowSeparatedGroups: false,
       },
     ],
-    'no-restricted-imports': [
-      'error',
+    "import/no-unresolved": "error",
+    "import/order": [
+      "error",
+      {
+        groups: [
+          "builtin",
+          "external",
+          "internal",
+          ["sibling", "parent"],
+          "index",
+          "unknown",
+        ],
+        "newlines-between": "always",
+        alphabetize: {
+          order: "asc",
+          caseInsensitive: true,
+        },
+      },
+    ],
+    "sort-exports/sort-exports": ["error", {"sortDir": "asc"}],
+    "@typescript-eslint/no-misused-promises": [
+      2,
+      {
+        checksVoidReturn: {
+          attributes: false,
+        },
+      },
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ],
+    "no-restricted-imports": [
+      "error",
       {
         patterns: [
           {
-            group: ['./*/', '**../'],
-            message: 'Relative imports are not allowed.',
+            group: ["./*/", "**../"],
+            message: "Relative imports are not allowed.",
           },
         ],
       },
     ],
   },
   settings: {
-    react: { version: 'detect' },
+    "import/resolver": {
+      typescript: {
+        project: "./tsconfig.json",
+      },
+    },
   },
+  ignorePatterns: ["dist", ".eslintrc.cjs"],
 };

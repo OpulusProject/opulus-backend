@@ -13,26 +13,26 @@ enum OnboardingStatus {
 }
 
 model User {
-  id   String @id @default(cuid())
-  firstName String?
-  lastName  String?
-  email     String   @unique
-  password  String
+  id               String           @id @default(cuid())
+  firstName        String?
+  lastName         String?
+  email            String           @unique
+  password         String
   onboardingStatus OnboardingStatus @default(IN_PROGRESS)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 
   account Account[]
 }
 
 model Account {
-  id String @id
-  userId String
-  mask      String?
-  name      String?
-  officialName  String?
-  type      String
-  subtype   String?
+  id           String  @id
+  userId       String
+  mask         String?
+  name         String?
+  officialName String?
+  type         String
+  subtype      String?
 
   user User @relation(fields: [userId], references: [id])
 
@@ -40,11 +40,11 @@ model Account {
 }
 
 model Balance {
-  accountId String @id 
-  current   Decimal?
-  isoCurrencyCode String?
-  unofficialCurrencyCode  String?
-  lastUpdate  DateTime?
+  accountId              String    @id
+  current                Decimal?
+  isoCurrencyCode        String?
+  unofficialCurrencyCode String?
+  lastUpdate             DateTime?
 
   account Account @relation(fields: [accountId], references: [id])
 }
