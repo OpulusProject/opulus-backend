@@ -1,7 +1,8 @@
 import { Account, Balance, User } from "@prisma/client";
+import { Request, Response } from "express";
+
 import { createAccount } from "@service/accountService";
 import { exchangePublicToken, getPlaidAccounts } from "@service/plaidService";
-import { Request, Response } from "express";
 
 export async function createAccountsHandler(req: Request, res: Response) {
   const user = res.locals.user as User;

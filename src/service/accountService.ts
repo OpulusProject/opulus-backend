@@ -1,4 +1,5 @@
-import { Account, Balance, Prisma } from "@prisma/client";
+import { Account, Balance } from "@prisma/client";
+
 import prisma from "@prisma/index";
 
 export async function createAccount(

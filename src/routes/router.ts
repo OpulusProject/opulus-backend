@@ -1,9 +1,9 @@
 import { Router } from "express";
 
+import accountRouter from "@routes/accountRoutes";
 import authRouter from "@routes/authRoutes";
 import plaidRouter from "@routes/plaidRoutes";
 import userRouter from "@routes/userRoutes";
-import accountRouter from "./accountRoutes";
 
 const router: Router = Router();
 

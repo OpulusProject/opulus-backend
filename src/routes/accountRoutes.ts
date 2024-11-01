@@ -1,6 +1,7 @@
+import { Router } from "express";
+
 import { createAccountsHandler } from "@controller/accountController";
 import requireUser from "@middleware/requireUser";
-import { Router } from "express";
 
 const accountRouter = Router();
 
