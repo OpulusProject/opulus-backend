@@ -1,9 +1,9 @@
 import { Account, Balance, User } from "@prisma/client";
 import { Request, Response } from "express";
 
+import { CreateAccountInput } from "@schema/accountSchema";
 import { createAccount } from "@service/accountService";
 import { exchangePublicToken, getPlaidAccounts } from "@service/plaidService";
-import { CreateAccountInput } from "@schema/accountSchema";
 
 export async function createAccountsHandler(
   req: Request<object, object, CreateAccountInput>,
