@@ -17,3 +17,11 @@ export async function createAccount(
     },
   });
 }
+
+export async function findAccountsByUserId(userId: string) {
+  return await prisma.account.findMany({
+    where: {
+      userId,
+    },
+  });
+}
