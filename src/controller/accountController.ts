@@ -15,8 +15,6 @@ export async function createAccountsHandler(req: Request, res: Response) {
     const getPlaidAccountsResponse = await getPlaidAccounts(accessToken);
     const plaidAccounts = getPlaidAccountsResponse.data.accounts;
 
-    console.log(getPlaidAccountsResponse)
-
     const createdAccounts = [];
 
     for (const plaidAccount of plaidAccounts) {
@@ -33,7 +31,7 @@ export async function createAccountsHandler(req: Request, res: Response) {
           subtype: plaidAccount.subtype,
         };
 
-        const balance: Omit<Balance, 'accountId'> = {
+        const balance: Omit<Balance, "accountId"> = {
           current: plaidAccount.balances.current,
           isoCurrencyCode: plaidAccount.balances.iso_currency_code,
           unofficialCurrencyCode:
