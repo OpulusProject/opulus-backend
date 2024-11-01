@@ -68,10 +68,10 @@ export async function createAccountsHandler(
   }
 }
 
-export function getAccountsHandler(req: Request, res: Response) {
+export async function getAccountsHandler(req: Request, res: Response) {
   const user = res.locals.user as User;
   try {
-    const accounts = findAccountsByUserId(user.id);
+    const accounts = await findAccountsByUserId(user.id);
     res.status(200).json({
       message: "Accounts retrieved successfully",
       accounts,
