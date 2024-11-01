@@ -15,6 +15,7 @@ DROP SEQUENCE "User_id_seq";
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "accessToken" TEXT NOT NULL,
     "mask" TEXT,
     "name" TEXT,
     "officialName" TEXT,
@@ -27,7 +28,7 @@ CREATE TABLE "Account" (
 -- CreateTable
 CREATE TABLE "Balance" (
     "accountId" TEXT NOT NULL,
-    "current" DECIMAL(65,30),
+    "current" DOUBLE PRECISION,
     "isoCurrencyCode" TEXT,
     "unofficialCurrencyCode" TEXT,
     "lastUpdate" TIMESTAMP(3),

@@ -28,6 +28,7 @@ model User {
 model Account {
   id           String  @id
   userId       String
+  accessToken  String
   mask         String?
   name         String?
   officialName String?
@@ -41,7 +42,7 @@ model Account {
 
 model Balance {
   accountId              String    @id
-  current                Decimal?
+  current                Float?
   isoCurrencyCode        String?
   unofficialCurrencyCode String?
   lastUpdate             DateTime?
