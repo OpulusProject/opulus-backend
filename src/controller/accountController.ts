@@ -25,6 +25,7 @@ export async function createAccountsHandler(req: Request, res: Response) {
         const account: Account = {
           id: accountId,
           userId: user.id,
+          accessToken,
           mask: plaidAccount.mask,
           name: plaidAccount.name,
           officialName: plaidAccount.official_name,

@@ -15,6 +15,7 @@ DROP SEQUENCE "User_id_seq";
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
+    "accessToken" TEXT NOT NULL,
     "mask" TEXT,
     "name" TEXT,
     "officialName" TEXT,
