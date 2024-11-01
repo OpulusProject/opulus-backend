@@ -2,7 +2,6 @@ import {
   AccountsGetRequest,
   Configuration,
   CountryCode,
-  ItemPublicTokenCreateRequest,
   ItemPublicTokenExchangeRequest,
   LinkTokenCreateRequest,
   PlaidApi,

@@ -3,8 +3,12 @@ import { Request, Response } from "express";
 
 import { createAccount } from "@service/accountService";
 import { exchangePublicToken, getPlaidAccounts } from "@service/plaidService";
+import { CreateAccountInput } from "@schema/accountSchema";
 
-export async function createAccountsHandler(req: Request, res: Response) {
+export async function createAccountsHandler(
+  req: Request<object, object, CreateAccountInput>,
+  res: Response,
+) {
   const user = res.locals.user as User;
   const { publicToken } = req.body;
   try {
