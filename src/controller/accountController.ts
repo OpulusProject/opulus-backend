@@ -68,7 +68,7 @@ export async function createAccountsHandler(
   }
 }
 
-export function getAccounts(req: Request, res: Response) {
+export function getAccountsHandler(req: Request, res: Response) {
   const user = res.locals.user as User;
   try {
     const accounts = findAccountsByUserId(user.id);
