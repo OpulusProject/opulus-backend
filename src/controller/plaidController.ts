@@ -11,7 +11,7 @@ export async function createLinkTokenHandler(req: Request, res: Response) {
     const linkTokenResponse = await createLinkToken(userId);
 
     res.status(200).json({
-      link_token: linkTokenResponse.data.link_token,
+      linkToken: linkTokenResponse.data.link_token,
     });
   } catch (error) {
     if (error as PlaidError) {
