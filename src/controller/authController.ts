@@ -1,3 +1,4 @@
+import { User } from "@prisma/client";
 import { verify } from "argon2";
 import { Request, Response } from "express";
 
@@ -5,6 +6,24 @@ import { CreateSessionInput } from "@schema/authSchema";
 import { signAccessToken, signRefreshToken } from "@service/authService";
 import { findUserByEmail, findUserById } from "@service/userService";
 import { verifyJwt } from "@utils/jwt";
+
+const ACCESS_TOKEN_MAX_AGE = 1000 * 60 * 15; // 15 min
+const REFRESH_TOKEN_MAX_AGE = 1000 * 60 * 60 * 24 * 30; // 30 days
+
+function issueTokens(res: Response, user: User) {
+  const accessToken = signAccessToken(user);
+  const refreshToken = signRefreshToken(user);
+
+  res.cookie("accessToken", accessToken, {
+    httpOnly: true,
+    maxAge: ACCESS_TOKEN_MAX_AGE,
+  });
+
+  res.cookie("refreshToken", refreshToken, {
+    httpOnly: true,
+    maxAge: REFRESH_TOKEN_MAX_AGE,
+  });
+}
 
 export async function createSessionHandler(
   req: Request<object, object, CreateSessionInput>,
@@ -24,19 +43,7 @@ export async function createSessionHandler(
     return;
   }
 
-  const accessToken = signAccessToken(user);
-  const refreshToken = signRefreshToken(user);
-
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    maxAge: 1000 * 60 * 15,
-  });
-
-  res.cookie("refreshToken", refreshToken, {
-    httpOnly: true,
-    maxAge: 1000 * 60 * 60 * 24 * 90,
-  });
-
+  issueTokens(res, user);
   res.status(200).send();
 }
 
@@ -69,12 +76,6 @@ export async function refreshAccessTokenHandler(req: Request, res: Response) {
     return;
   }
 
-  const accessToken = signAccessToken(user);
-
-  res.cookie("accessToken", accessToken, {
-    httpOnly: true,
-    maxAge: 1000 * 60 * 15,
-  });
-
+  issueTokens(res, user);
   res.status(200).send();
 }
