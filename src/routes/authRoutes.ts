@@ -5,7 +5,6 @@ import {
   invalidateSessionHandler,
   refreshAccessTokenHandler,
 } from "@controller/authController";
-import requireUser from "@middleware/requireUser";
 import validateResource from "@middleware/validateResource";
 import { createSessionSchema } from "@schema/authSchema";
 
@@ -19,6 +18,6 @@ authRouter.post(
 
 authRouter.post("/sessions/invalidate", invalidateSessionHandler);
 
-authRouter.post("/sessions/refresh", requireUser, refreshAccessTokenHandler);
+authRouter.post("/sessions/refresh", refreshAccessTokenHandler);
 
 export default authRouter;
