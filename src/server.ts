@@ -2,7 +2,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import { config } from "dotenv";
-import express from "express";
+import express, { json } from "express";
 
 config();
 
@@ -12,7 +12,7 @@ import router from "@routes/router";
 
 const app = express();
 
-app.use(express.json());
+app.use(json());
 app.use(
   cors({
     origin: "http://localhost:5173",
