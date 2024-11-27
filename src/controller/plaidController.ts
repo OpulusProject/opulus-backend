@@ -20,7 +20,8 @@ export async function createLinkTokenHandler(req: Request, res: Response) {
     let userToken: string;
 
     if (userResponse.plaidUserToken) {
-      userToken = userResponse.plaidUserToken as string;
+      // todo: fix this weird eslint issue
+      userToken = userResponse.plaidUserToken;
     } else {
       const createPlaidUserResponse = await createPlaidUser(userId);
       userToken = createPlaidUserResponse.data.user_token;
