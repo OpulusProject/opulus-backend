@@ -2,13 +2,32 @@ import { User } from "@prisma/client";
 import { Request, Response } from "express";
 import { PlaidError } from "plaid";
 
-import { createLinkToken } from "@service/plaidService";
+import { createLinkToken, createPlaidUser } from "@service/plaidService";
+import { findUserById, updateUser } from "@service/userService";
 
 export async function createLinkTokenHandler(req: Request, res: Response) {
   try {
     const user = res.locals.user as User;
-    const userId = user.id.toString();
-    const linkTokenResponse = await createLinkToken(userId);
+    const userId = user.id;
+
+    const userResponse = await findUserById(userId);
+
+    if (!userResponse) {
+      res.status(404).json({ message: "User not found." });
+      return;
+    }
+
+    let userToken: string;
+
+    if (userResponse.plaidUserToken) {
+      userToken = userResponse.plaidUserToken as string;
+    } else {
+      const createPlaidUserResponse = await createPlaidUser(userId);
+      userToken = createPlaidUserResponse.data.user_token;
+      await updateUser(userId, { plaidUserToken: userToken });
+    }
+
+    const linkTokenResponse = await createLinkToken(userToken, userId);
 
     res.status(200).json({
       linkToken: linkTokenResponse.data.link_token,
