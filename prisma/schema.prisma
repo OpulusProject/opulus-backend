@@ -21,6 +21,7 @@ model User {
   onboardingStatus OnboardingStatus @default(IN_PROGRESS)
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @updatedAt
+  plaidUserToken   String?
 
   account Account[]
 }

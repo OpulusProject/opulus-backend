@@ -7,6 +7,7 @@ import {
   PlaidApi,
   PlaidEnvironments,
   Products,
+  UserCreateRequest,
 } from "plaid";
 
 const PLAID_CLIENT_ID = process.env.PLAID_CLIENT_ID;
@@ -26,10 +27,11 @@ const configuration = new Configuration({
 
 const plaid = new PlaidApi(configuration);
 
-export async function createLinkToken(userId: string) {
+export async function createLinkToken(userToken: string, userId: string) {
   const products: Products[] = [Products.Assets, Products.Transactions];
   const country_codes: CountryCode[] = [CountryCode.Ca];
   const request: LinkTokenCreateRequest = {
+    user_token: userToken,
     user: {
       client_user_id: userId,
     },
@@ -41,6 +43,14 @@ export async function createLinkToken(userId: string) {
   };
 
   return await plaid.linkTokenCreate(request);
+}
+
+export async function createPlaidUser(userId: string) {
+  const request: UserCreateRequest = {
+    client_user_id: userId,
+  };
+
+  return await plaid.userCreate(request);
 }
 
 export async function exchangePublicToken(publicToken: string) {
