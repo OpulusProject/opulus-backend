@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import { createLinkTokenHandler } from "@controller/plaidController";
 import requireUser from "@middleware/requireUser";
+import { createLinkTokenHandler } from "src/controllers/plaid/createLinkTokenHandler";
 
 const plaidRouter = Router();
 

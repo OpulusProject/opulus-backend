@@ -1,9 +1,8 @@
-import { Prisma, User } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { Request, Response } from "express";
-import { omit } from "lodash";
 
 import { CreateUserInput } from "@schema/userSchema";
-import { createUser } from "@service/userService";
+import { createUser } from "@services/user/createUser";
 
 export async function createUserHandler(
   req: Request<object, object, CreateUserInput>,
@@ -37,10 +36,4 @@ export async function createUserHandler(
       details: (e as Error).message,
     });
   }
-}
-
-export function getCurrentUserHandler(req: Request, res: Response) {
-  const user = res.locals.user as User;
-  const payload = omit(user, user.password);
-  res.send(payload);
 }
