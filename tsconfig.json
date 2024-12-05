@@ -8,12 +8,12 @@
     "strict": true,
     "skipLibCheck": true,
     "paths": {
-      "@controller/*": ["./src/controller/*"],
+      "@controllers/*": ["./src/controllers/*"],
       "@middleware/*": ["./src/middleware/*"],
       "@prisma/*": ["./prisma/*"],
       "@routes/*": ["./src/routes/*"],
       "@schema/*": ["./src/schema/*"],
-      "@service/*": ["./src/service/*"],
+      "@services/*": ["./src/services/*"],
       "@utils/*": ["./src/utils/*"]
     }
   }

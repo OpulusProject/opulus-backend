@@ -1,10 +1,8 @@
 import { Router } from "express";
 
-import {
-  createSessionHandler,
-  invalidateSessionHandler,
-  refreshAccessTokenHandler,
-} from "@controller/authController";
+import { createSessionHandler } from "@controllers/auth/createSessionHandler";
+import { invalidateSessionHandler } from "@controllers/auth/invalidateSessionHandler";
+import { refreshAccessTokenHandler } from "@controllers/auth/refreshSessionHandler";
 import validateResource from "@middleware/validateResource";
 import { createSessionSchema } from "@schema/authSchema";
 

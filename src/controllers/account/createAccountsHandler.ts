@@ -2,8 +2,9 @@ import { Account, Balance, User } from "@prisma/client";
 import { Request, Response } from "express";
 
 import { CreateAccountInput } from "@schema/accountSchema";
-import { createAccount, findAccountsByUserId } from "@service/accountService";
-import { exchangePublicToken, getPlaidAccounts } from "@service/plaidService";
+import { createAccount } from "@services/account/createAccount";
+import { exchangePublicToken } from "@services/plaid/exchangePublicToken";
+import { getPlaidAccounts } from "@services/plaid/getPlaidAccounts";
 
 export async function createAccountsHandler(
   req: Request<object, object, CreateAccountInput>,
@@ -63,23 +64,6 @@ export async function createAccountsHandler(
     console.error("Unknown error creating accounts:", error);
     res.status(500).json({
       message: "Could not create accounts",
-      error: (error as Error).message,
-    });
-  }
-}
-
-export async function getAccountsHandler(req: Request, res: Response) {
-  const user = res.locals.user as User;
-  try {
-    const accounts = await findAccountsByUserId(user.id);
-    res.status(200).json({
-      message: "Accounts retrieved successfully",
-      accounts,
-    });
-  } catch (error) {
-    console.error("Unknown error getting accounts:", error);
-    res.status(500).json({
-      message: "Could not get accounts",
       error: (error as Error).message,
     });
   }

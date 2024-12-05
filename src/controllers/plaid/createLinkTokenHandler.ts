@@ -2,8 +2,10 @@ import { User } from "@prisma/client";
 import { Request, Response } from "express";
 import { PlaidError } from "plaid";
 
-import { createLinkToken, createPlaidUser } from "@service/plaidService";
-import { findUserById, updateUser } from "@service/userService";
+import { createLinkToken } from "@services/plaid/createLinkToken";
+import { createPlaidUser } from "@services/plaid/createPlaidUser";
+import { findUserById } from "@services/user/findUserById";
+import { updateUser } from "@services/user/updateUser";
 
 export async function createLinkTokenHandler(req: Request, res: Response) {
   try {
@@ -20,7 +22,6 @@ export async function createLinkTokenHandler(req: Request, res: Response) {
     let userToken: string;
 
     if (userResponse.plaidUserToken) {
-      // todo: fix this weird eslint issue
       userToken = userResponse.plaidUserToken;
     } else {
       const createPlaidUserResponse = await createPlaidUser(userId);
