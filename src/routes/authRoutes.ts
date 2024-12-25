@@ -19,6 +19,6 @@ authRouter.post(
 
 authRouter.post("/auth/logout", logoutHandler);
 
-authRouter.post("/sessions/refresh", refreshAccessTokenHandler);
+authRouter.post("/auth/refresh", refreshAccessTokenHandler);
 
 export default authRouter;
