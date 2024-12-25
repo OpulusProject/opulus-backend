@@ -18,6 +18,11 @@ export async function createSessionHandler(
     return;
   }
 
+  if (!user.password) {
+    res.status(401).send("Invalid email or password.");
+    return;
+  }
+
   const isValid = await verify(user.password, password);
   if (!isValid) {
     res.status(401).send("Invalid email or password.");
