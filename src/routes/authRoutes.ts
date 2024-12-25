@@ -9,7 +9,7 @@ import { createSessionSchema } from "@schema/authSchema";
 
 const authRouter = Router();
 
-authRouter.get("/sessions/oauth/google", googleOAuthHandler);
+authRouter.get("/auth/oauth/google", googleOAuthHandler);
 
 authRouter.post(
   "/sessions",
