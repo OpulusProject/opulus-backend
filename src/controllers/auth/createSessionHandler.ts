@@ -1,13 +1,13 @@
 import { verify } from "argon2";
 import { Request, Response } from "express";
 
-import { CreateSessionInput } from "@schema/authSchema";
+import { LoginInput } from "@schema/authSchema";
 import { findUserByEmail } from "@services/user/findUserByEmail";
 
 import { issueTokens } from "./issueTokens";
 
-export async function createSessionHandler(
-  req: Request<object, object, CreateSessionInput>,
+export async function loginHandler(
+  req: Request<object, object, LoginInput>,
   res: Response,
 ) {
   const { email, password } = req.body;

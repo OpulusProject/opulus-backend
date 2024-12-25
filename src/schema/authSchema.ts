@@ -1,8 +1,8 @@
 import { TypeOf, object, string } from "zod";
 
-export type CreateSessionInput = TypeOf<typeof createSessionSchema>["body"];
+export type LoginInput = TypeOf<typeof loginSchema>["body"];
 
-export const createSessionSchema = object({
+export const loginSchema = object({
   body: object({
     email: string({
       required_error: "Email is required",

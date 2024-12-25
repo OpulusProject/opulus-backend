@@ -1,24 +1,20 @@
 import { Router } from "express";
 
-import { createSessionHandler } from "@controllers/auth/createSessionHandler";
+import { loginHandler } from "@controllers/auth/createSessionHandler";
 import { googleOAuthHandler } from "@controllers/auth/googleOAuthHandler";
-import { invalidateSessionHandler } from "@controllers/auth/invalidateSessionHandler";
+import { logoutHandler } from "@controllers/auth/logoutHandler";
 import { refreshAccessTokenHandler } from "@controllers/auth/refreshSessionHandler";
 import validateResource from "@middleware/validateResource";
-import { createSessionSchema } from "@schema/authSchema";
+import { loginSchema } from "@schema/authSchema";
 
 const authRouter = Router();
 
-authRouter.get("/sessions/oauth/google", googleOAuthHandler);
+authRouter.get("/auth/oauth/google", googleOAuthHandler);
 
-authRouter.post(
-  "/sessions",
-  validateResource(createSessionSchema),
-  createSessionHandler,
-);
+authRouter.post("/auth/login", validateResource(loginSchema), loginHandler);
 
-authRouter.post("/sessions/invalidate", invalidateSessionHandler);
+authRouter.post("/auth/logout", logoutHandler);
 
-authRouter.post("/sessions/refresh", refreshAccessTokenHandler);
+authRouter.post("/auth/refresh", refreshAccessTokenHandler);
 
 export default authRouter;
