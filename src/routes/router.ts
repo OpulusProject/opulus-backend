@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import itemRouter from "@routes//itemRoutes";
 import accountRouter from "@routes/accountRoutes";
 import authRouter from "@routes/authRoutes";
 import plaidRouter from "@routes/plaidRoutes";
@@ -13,6 +14,7 @@ router.get("/healthcheck", (req, res) => {
 
 router.use(accountRouter);
 router.use(authRouter);
+router.use(itemRouter);
 router.use(plaidRouter);
 router.use(userRouter);
 
