@@ -10,6 +10,9 @@ import deserializeUser from "@middleware/deserializeUser";
 import logResponse from "@middleware/logResponse";
 import router from "@routes/router";
 
+const SERVER_PORT = process.env.SERVER_PORT || 8080;
+const WEBHOOK_PORT = process.env.WEBHOOK_PORT || 8081;
+
 const app = express();
 
 app.use(json());
@@ -30,8 +33,19 @@ app.use(logResponse);
 
 app.use("/api", router);
 
-const port = process.env.PORT || 8080;
-
-app.listen(port, () => {
-  console.log(`App started at http://localhost:${port}`);
+app.listen(SERVER_PORT, () => {
+  console.log(`Server is up and running at http://localhost:${SERVER_PORT}`);
 });
+
+if (process.env.WEBHOOK_ENABLED === "true") {
+  const webhookApp = express();
+
+  webhookApp.use(bodyParser.json());
+  webhookApp.use(bodyParser.urlencoded({ extended: true }));
+
+  webhookApp.listen(WEBHOOK_PORT, () => {
+    console.log(
+      `Webhook receiver is up and running at http://localhost:${WEBHOOK_PORT}/`,
+    );
+  });
+}
