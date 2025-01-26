@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import { findUserById } from "@services/user/findUserById";
+import { getUser } from "@services/user/getUser";
 import { verifyJwt } from "@utils/jwt";
 
 import { issueTokens } from "./issueTokens";
@@ -21,7 +21,8 @@ export async function refreshAccessTokenHandler(req: Request, res: Response) {
     return;
   }
 
-  const user = await findUserById(decoded.id);
+  const userId = decoded.id;
+  const user = await getUser({ userId });
   if (!user) {
     res.status(401).send("User does not exist.");
     return;

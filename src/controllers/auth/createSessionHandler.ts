@@ -2,7 +2,7 @@ import { verify } from "argon2";
 import { Request, Response } from "express";
 
 import { LoginInput } from "@schema/authSchema";
-import { findUserByEmail } from "@services/user/findUserByEmail";
+import { getUser } from "@services/user/getUser";
 
 import { issueTokens } from "./issueTokens";
 
@@ -12,7 +12,7 @@ export async function loginHandler(
 ) {
   const { email, password } = req.body;
 
-  const user = await findUserByEmail(email);
+  const user = await getUser({ email });
   if (!user) {
     res.status(401).send("Invalid email or password.");
     return;
