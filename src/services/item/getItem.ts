@@ -1,11 +1,12 @@
 import prisma from "@prisma/index";
 
 export type GetItemsFilters = {
+  userId: string;
   institutionId?: string;
 };
 
-export async function getItem(userId: string, filters: GetItemsFilters) {
-  const { institutionId } = filters;
+export async function getItem(filters: GetItemsFilters) {
+  const { userId, institutionId } = filters;
 
   return await prisma.item.findFirst({
     where: {
