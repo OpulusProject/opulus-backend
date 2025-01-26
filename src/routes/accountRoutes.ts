@@ -5,6 +5,6 @@ import requireUser from "@middleware/requireUser";
 
 const accountRouter = Router();
 
-accountRouter.get("/accounts", requireUser, getAccountsHandler);
+accountRouter.get("/account", requireUser, getAccountsHandler);
 
 export default accountRouter;
