@@ -1,12 +1,12 @@
 import prisma from "@prisma/index";
 
-export type GetUserFilters = {
+type GetUserFilters = {
   userId?: string;
   email?: string;
 };
 
 export async function getUser(filters: GetUserFilters) {
-  const { userId, email } = filters || {};
+  const { userId, email } = filters;
 
   if (userId) {
     return await prisma.user.findUnique({
