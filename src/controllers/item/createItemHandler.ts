@@ -31,8 +31,7 @@ export async function createItemHandler(
 
     if (institutionId) {
       // Check if item already exists in the database
-      const getItemResponse = await getItem(userId, { institutionId });
-      console.log(getItemResponse);
+      const getItemResponse = await getItem({ userId, institutionId });
 
       if (getItemResponse) {
         res.status(409).json({
