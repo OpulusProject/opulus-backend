@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import { getGoogleOAuthTokens } from "@services/auth/getGoogleOAuthTokens";
 import { getGoogleUser } from "@services/auth/getGoogleUser";
 import { createUser } from "@services/user/createUser";
-import { findUserByEmail } from "@services/user/findUserByEmail";
+import { getUser } from "@services/user/getUser";
 import { updateUser } from "@services/user/updateUser";
 
 import { issueTokens } from "./issueTokens";
@@ -27,7 +27,8 @@ export async function googleOAuthHandler(req: Request, res: Response) {
       return;
     }
 
-    let user = await findUserByEmail(googleUser.email);
+    const email = googleUser.email;
+    let user = await getUser({ email });
 
     if (user) {
       user = await updateUser(user.id, {

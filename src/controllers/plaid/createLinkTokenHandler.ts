@@ -4,7 +4,7 @@ import { PlaidError } from "plaid";
 
 import { createLinkToken } from "@services/plaid/createLinkToken";
 import { createPlaidUser } from "@services/plaid/createPlaidUser";
-import { findUserById } from "@services/user/findUserById";
+import { getUser } from "@services/user/getUser";
 import { updateUser } from "@services/user/updateUser";
 
 export async function createLinkTokenHandler(req: Request, res: Response) {
@@ -12,7 +12,7 @@ export async function createLinkTokenHandler(req: Request, res: Response) {
     const user = res.locals.user as User;
     const userId = user.id;
 
-    const userResponse = await findUserById(userId);
+    const userResponse = await getUser({ userId });
 
     if (!userResponse) {
       res.status(404).json({ message: "User not found." });
