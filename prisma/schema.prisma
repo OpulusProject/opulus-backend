@@ -14,8 +14,8 @@ enum OnboardingStatus {
 
 model User {
   id               String           @id @default(cuid())
-  plaidId          String?
-  plaidUserToken   String?
+  plaidId          String?          @unique
+  plaidUserToken   String?          @unique
   firstName        String?
   lastName         String?
   email            String           @unique
@@ -29,7 +29,7 @@ model User {
 
 model Item {
   id               String           @id @default(cuid())
-  plaidId          String
+  plaidId          String           @unique
   userId           String
   accessToken      String
   institutionId    String?
@@ -43,7 +43,7 @@ model Item {
 
 model Account {
   id               String           @id @default(cuid())
-  plaidId          String
+  plaidId          String           @unique
   itemId           String
   mask             String?
   name             String?
@@ -63,7 +63,7 @@ model Account {
 
 model Transaction {
   id              String           @id @default(cuid())
-  plaidId         String
+  plaidId         String           @unique
   accountId       String
   amount          Float
   currencyCode    String?

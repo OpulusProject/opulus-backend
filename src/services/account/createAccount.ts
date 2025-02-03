@@ -1,5 +1,3 @@
-import { Prisma } from "@prisma/client";
-
 import prisma from "@prisma/index";
 
 interface CreateAccount {
@@ -17,15 +15,9 @@ interface CreateAccount {
 }
 
 export async function createAccount(account: CreateAccount) {
-  try {
-    return await prisma.account.create({
-      data: {
-        ...account,
-      },
-    });
-  } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      throw new Error(error.message);
-    }
-  }
+  return await prisma.account.create({
+    data: {
+      ...account,
+    },
+  });
 }
