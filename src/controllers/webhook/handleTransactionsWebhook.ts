@@ -14,8 +14,6 @@ export async function handleTransactionsWebhook(
 ) {
   const { webhook_code: webhookCode, item_id: plaidItemId } = req.body;
 
-  // todo: add the verify webhook service call here
-
   console.log(
     `WEBHOOK: TRANSACTIONS: ${webhookCode}: Plaid_item_id ${plaidItemId}`,
   );

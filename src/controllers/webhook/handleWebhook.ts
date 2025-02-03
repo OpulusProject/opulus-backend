@@ -11,6 +11,8 @@ export async function handleWebook(
 ) {
   const { webhook_type: webhookType } = req.body;
 
+  // todo: add the verify webhook service call here
+
   switch (webhookType) {
     case "transactions": {
       await handleTransactionsWebhook(req, res);

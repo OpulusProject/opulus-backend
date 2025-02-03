@@ -11,7 +11,7 @@ export const WebhookSchema = object({
       required_error: "Webhook code is required",
     }),
     item_id: string({
-      required_error: "PlaidItemId is required",
+      required_error: "Item id is required",
     }),
   }),
 });
