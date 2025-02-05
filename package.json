@@ -4,9 +4,11 @@
   "version": "0.0.0",
   "scripts": {
     "server": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts",
+    "webhook": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/webhook.ts",
     "eslint": "eslint .",
     "prettier": "prettier .",
-    "format": "npm run prettier -- --write && prisma format"
+    "format": "npm run prettier -- --write && prisma format",
+    "start:webhook": "ts-node src/webhookServer.ts"
   },
   "devDependencies": {
     "@types/config": "^3.3.5",
