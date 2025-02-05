@@ -15,7 +15,7 @@ export async function handleTransactionsWebhook(
   const { webhook_code: webhookCode, item_id: plaidItemId } = req.body;
 
   console.log(
-    `WEBHOOK: TRANSACTIONS: ${webhookCode}: Plaid_item_id ${plaidItemId}`,
+    `TRANSACTIONS WEBHOOK: ${webhookCode}: Plaid_item_id ${plaidItemId}`,
   );
 
   const item = await getItem({ plaidItemId });

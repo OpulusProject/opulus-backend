@@ -13,7 +13,7 @@ export function unhandledWebhook(
   } = req.body;
 
   console.log(
-    `UNHANDLED ${webhookType} WEBHOOK: ${webhookCode}: Plaid item id ${plaidItemId}: unhandled webhook type received.`,
+    `UNHANDLED ${webhookType} WEBHOOK: ${webhookCode}: Plaid item id ${plaidItemId}`,
   );
 
   res.status(400).json({ message: "Unhandled webhook type" });
