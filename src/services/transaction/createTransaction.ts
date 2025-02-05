@@ -22,9 +22,17 @@ interface CreateTransaction {
 }
 
 export async function createTransaction(transaction: CreateTransaction) {
-  return await prisma.transaction.create({
-    data: {
-      ...transaction,
-    },
-  });
+  try {
+    return await prisma.transaction.create({
+      data: {
+        ...transaction,
+      },
+    });
+  } catch (error) {
+    console.error(
+      `Failed to create transaction: ${transaction.plaidId}`,
+      error,
+    );
+    throw error;
+  }
 }

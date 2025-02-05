@@ -22,12 +22,20 @@ interface UpdateTransaction {
 }
 
 export async function updateTransaction(transaction: UpdateTransaction) {
-  return await prisma.transaction.update({
-    where: {
-      plaidId: transaction.plaidId,
-    },
-    data: {
-      ...transaction,
-    },
-  });
+  try {
+    return await prisma.transaction.update({
+      where: {
+        plaidId: transaction.plaidId,
+      },
+      data: {
+        ...transaction,
+      },
+    });
+  } catch (error) {
+    console.error(
+      `Failed to update transaction: ${transaction.plaidId}`,
+      error,
+    );
+    throw error;
+  }
 }
