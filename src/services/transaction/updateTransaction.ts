@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 import prisma from "@prisma/index";
 
 interface UpdateTransaction {
@@ -32,10 +34,8 @@ export async function updateTransaction(transaction: UpdateTransaction) {
       },
     });
   } catch (error) {
-    console.error(
-      `Failed to update transaction: ${transaction.plaidId}`,
-      error,
-    );
-    throw error;
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      throw new Error(error.message);
+    }
   }
 }

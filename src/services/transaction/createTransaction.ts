@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 import prisma from "@prisma/index";
 
 interface CreateTransaction {
@@ -23,16 +25,22 @@ interface CreateTransaction {
 
 export async function createTransaction(transaction: CreateTransaction) {
   try {
+    const existingTransaction = await prisma.transaction.findUnique({
+      where: { plaidId: transaction.plaidId },
+    });
+
+    if (existingTransaction) {
+      return existingTransaction;
+    }
+
     return await prisma.transaction.create({
       data: {
         ...transaction,
       },
     });
   } catch (error) {
-    console.error(
-      `Failed to create transaction: ${transaction.plaidId}`,
-      error,
-    );
-    throw error;
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      throw new Error(error.message);
+    }
   }
 }

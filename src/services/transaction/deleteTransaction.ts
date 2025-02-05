@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 import prisma from "@prisma/index";
 
 export async function deleteTransaction(plaidId: string) {
@@ -8,7 +10,8 @@ export async function deleteTransaction(plaidId: string) {
       },
     });
   } catch (error) {
-    console.error(`Failed to delete transaction: ${plaidId}`, error);
-    throw error;
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      throw new Error(error.message);
+    }
   }
 }

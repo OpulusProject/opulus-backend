@@ -100,10 +100,6 @@ export async function verifyWebhook(
   const claimedBodyHash = (decodedToken as { request_body_sha256: string })
     .request_body_sha256;
 
-  // Add logging to debug the issue
-  console.log("Computed body hash:", bodyHash);
-  console.log("Claimed body hash:", claimedBodyHash);
-
   if (!safeCompare(bodyHash, claimedBodyHash)) {
     res
       .status(401)
