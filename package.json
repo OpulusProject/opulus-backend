@@ -7,8 +7,7 @@
     "webhook": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/webhook.ts",
     "eslint": "eslint .",
     "prettier": "prettier .",
-    "format": "npm run prettier -- --write && prisma format",
-    "start:webhook": "ts-node src/webhookServer.ts"
+    "format": "npm run prettier -- --write && prisma format"
   },
   "devDependencies": {
     "@types/config": "^3.3.5",
