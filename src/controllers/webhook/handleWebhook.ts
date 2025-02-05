@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { WebhookType } from "plaid/dist/api";
 
 import { WebhookInput } from "@schema/webhookSchema";
 
@@ -12,9 +13,10 @@ export async function handleWebook(
   const { webhook_type: webhookType } = req.body;
 
   // todo: add the verify webhook service call here
+  // todo: log when a webhook is received
 
   switch (webhookType) {
-    case "transactions": {
+    case WebhookType.Transactions.toString(): {
       await handleTransactionsWebhook(req, res);
       break;
     }

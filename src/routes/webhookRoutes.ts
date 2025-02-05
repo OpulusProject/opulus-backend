@@ -2,8 +2,8 @@ import { Router } from "express";
 
 import { handleWebook } from "@controllers/webhook/handleWebhook";
 
-const router = Router();
+const webhookRouter = Router();
 
-router.post("/webhook", handleWebook);
+webhookRouter.post("/webhook", handleWebook);
 
-export default router;
+export default webhookRouter;

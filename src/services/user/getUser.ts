@@ -1,16 +1,26 @@
 import prisma from "@prisma/index";
 
-export type GetUserFilters = {
+type GetUserFilters = {
+  userId?: string;
   email?: string;
 };
 
-export async function getUser(userId: string, filters?: GetUserFilters) {
-  const { email } = filters || {};
+export async function getUser(filters: GetUserFilters) {
+  const { userId, email } = filters;
 
-  return await prisma.user.findUnique({
-    where: {
-      id: userId,
-      email,
-    },
-  });
+  if (userId) {
+    return await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+  } else if (email) {
+    return await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+  } else {
+    throw new Error("userId or email must be provided");
+  }
 }
