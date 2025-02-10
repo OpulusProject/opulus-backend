@@ -2,6 +2,8 @@ import { CountryCode, LinkTokenCreateRequest, Products } from "plaid";
 
 import { plaid } from "./plaid";
 
+const WEBHOOK_URL = process.env.WEBHOOK_URL;
+
 export async function createLinkToken(userToken: string, userId: string) {
   const products: Products[] = [Products.Assets, Products.Transactions];
   const country_codes: CountryCode[] = [CountryCode.Ca];
@@ -14,6 +16,7 @@ export async function createLinkToken(userToken: string, userId: string) {
     products,
     country_codes,
     language: "en",
+    webhook: `${WEBHOOK_URL}/webhook`,
   };
 
   return await plaid.linkTokenCreate(request);

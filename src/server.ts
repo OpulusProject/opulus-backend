@@ -10,6 +10,8 @@ import deserializeUser from "@middleware/deserializeUser";
 import logResponse from "@middleware/logResponse";
 import router from "@routes/router";
 
+const SERVER_PORT = process.env.SERVER_PORT || 8080;
+
 const app = express();
 
 app.use(json());
@@ -30,8 +32,6 @@ app.use(logResponse);
 
 app.use("/api", router);
 
-const port = process.env.PORT || 8080;
-
-app.listen(port, () => {
-  console.log(`App started at http://localhost:${port}`);
+app.listen(SERVER_PORT, () => {
+  console.log(`Server is up and running at http://localhost:${SERVER_PORT}`);
 });

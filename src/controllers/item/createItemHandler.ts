@@ -9,6 +9,9 @@ import { exchangePublicToken } from "@services/plaid/exchangePublicToken";
 import { getInstitutionById } from "@services/plaid/getInstitutionById";
 import { getPlaidAccounts } from "@services/plaid/getPlaidAccounts";
 import { getPlaidItem } from "@services/plaid/getPlaidItem";
+import { transactionsSync } from "@services/plaid/transactionsSync";
+import { createTransaction } from "@services/transaction/createTransaction";
+import { normalizeTransaction } from "@services/transaction/normalizeTransaction";
 
 export async function createItemHandler(
   req: Request<object, object, CreateItemInput>,
@@ -91,6 +94,14 @@ export async function createItemHandler(
         });
         continue;
       }
+    }
+
+    // To receive the SYNC_UPDATES_AVAILABLE webhook for an item, we need to sync transactions at least once.
+    const transactionsSyncReponse = await transactionsSync(item.accessToken);
+    const { added } = transactionsSyncReponse.data;
+
+    for (const transaction of added) {
+      await createTransaction(normalizeTransaction(transaction));
     }
 
     res.status(200).json({
