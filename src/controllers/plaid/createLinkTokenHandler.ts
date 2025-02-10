@@ -2,6 +2,7 @@ import { User } from "@prisma/client";
 import { Request, Response } from "express";
 import { PlaidError } from "plaid";
 
+import { createLinkSession } from "@services/linkSession/createLinkSession";
 import { createLinkToken } from "@services/plaid/createLinkToken";
 import { createPlaidUser } from "@services/plaid/createPlaidUser";
 import { getUser } from "@services/user/getUser";
@@ -30,10 +31,12 @@ export async function createLinkTokenHandler(req: Request, res: Response) {
     }
 
     const linkTokenResponse = await createLinkToken(userToken, userId);
+    const linkToken = linkTokenResponse.data.link_token;
 
-    res.status(200).json({
-      linkToken: linkTokenResponse.data.link_token,
-    });
+    // Store the link token in our database
+    await createLinkSession({ userId, linkToken });
+
+    res.status(200).json({ linkToken });
   } catch (error) {
     if (error as PlaidError) {
       const plaidError = error as PlaidError;
