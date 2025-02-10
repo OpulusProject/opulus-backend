@@ -17,38 +17,14 @@ export async function createItemHandler(
   req: Request<object, object, WebhookInput>,
   res: Response,
 ) {
-  const { public_token: publicToken, link_token: linkToken } = req.body;
+  const {
+    webhook_code: webhookCode,
+    public_token: publicToken,
+    link_token: linkToken,
+  } = req.body;
 
   try {
-    const exchangePublicTokenResponse = await exchangePublicToken(
-      publicToken as string,
-    );
-    const accessToken = exchangePublicTokenResponse.data.access_token;
-
-    const getPlaidItemResponse = await getPlaidItem(accessToken);
-    const plaidItem = getPlaidItemResponse.data.item;
-
-    const institutionId = plaidItem.institution_id;
-    let institutionName: string | undefined;
-
-    if (institutionId) {
-      // Check if item already exists in the database
-      const getItemResponse = await getItem({ plaidItemId: plaidItem.item_id });
-
-      if (getItemResponse) {
-        res.status(409).json({
-          message: "Item already exists",
-          item: getItemResponse,
-        });
-        return;
-      }
-
-      // Add the institution name to the item
-      const institutionResponse = await getInstitutionById(institutionId);
-      institutionName = institutionResponse.data.institution.name;
-    }
-
-    // Retrieve the link session from the database
+    // Retrieve the link session from the database for userId
     const linkSessionResponse = await getLinkSession({
       linkToken: linkToken as string,
     });
@@ -59,7 +35,38 @@ export async function createItemHandler(
       });
       return;
     }
+
     const userId = linkSessionResponse.userId;
+
+    // Exchange public token for an access token
+    const exchangePublicTokenResponse = await exchangePublicToken(
+      publicToken as string,
+    );
+    const accessToken = exchangePublicTokenResponse.data.access_token;
+
+    // Retrieve the item from Plaid
+    const getPlaidItemResponse = await getPlaidItem(accessToken);
+    const plaidItem = getPlaidItemResponse.data.item;
+
+    const institutionId = plaidItem.institution_id;
+    let institutionName: string | undefined;
+
+    if (institutionId) {
+      // Check if institution has already been linked to Opulus
+      const getItemResponse = await getItem({ userId, institutionId });
+
+      if (getItemResponse) {
+        res.status(409).json({
+          message: "Item has already been linked",
+          item: getItemResponse,
+        });
+        return;
+      }
+
+      // Add the institution name to the item
+      const institutionResponse = await getInstitutionById(institutionId);
+      institutionName = institutionResponse.data.institution.name;
+    }
 
     const item = {
       plaidId: plaidItem.item_id,
@@ -74,8 +81,6 @@ export async function createItemHandler(
     // Create accounts in the database at the same time to avoid orphaned items
     const getPlaidAccountsResponse = await getPlaidAccounts(accessToken);
     const plaidAccounts = getPlaidAccountsResponse.data.accounts;
-
-    const createdAccounts = [];
 
     for (const plaidAccount of plaidAccounts) {
       try {
@@ -97,8 +102,7 @@ export async function createItemHandler(
             plaidAccount.balances.unofficial_currency_code,
         };
 
-        const newAccount = await createAccount(account);
-        createdAccounts.push(newAccount);
+        await createAccount(account);
       } catch (accountError) {
         console.error({
           message: `Failed to create account ${plaidAccount.account_id}:`,
@@ -108,7 +112,7 @@ export async function createItemHandler(
       }
     }
 
-    // To receive the SYNC_UPDATES_AVAILABLE webhook for an item, we need to sync transactions at least once.
+    // To receive the SYNC_UPDATES_AVAILABLE webhook for an item, we need to sync transactions at least once
     const transactionsSyncReponse = await transactionsSync(item.accessToken);
     const { added } = transactionsSyncReponse.data;
 
@@ -116,10 +120,11 @@ export async function createItemHandler(
       await createTransaction(normalizeTransaction(transaction));
     }
 
+    console.log(
+      `${webhookCode} - ${plaidItem.item_id}: ${plaidAccounts.length} accounts added, ${added.length} transactions added`,
+    );
     res.status(200).json({
-      message: "Item and accounts created successfully",
-      createdItem,
-      createdAccounts,
+      message: "Item created successfully",
     });
   } catch (error) {
     console.error("Unknown error creating item:", error);

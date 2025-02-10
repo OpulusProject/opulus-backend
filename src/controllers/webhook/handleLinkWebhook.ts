@@ -10,12 +10,11 @@ export async function handleLinkWebhook(
   const { webhook_code: webhookCode, link_session_id: linkSessionId } =
     req.body;
 
-  console.log(`LINK WEBHOOK: ${webhookCode}: link_session_id ${linkSessionId}`);
+  console.log(`[LINK WEBHOOK] ${webhookCode} - ${linkSessionId}`);
 
   switch (webhookCode) {
     case "ITEM_ADD_RESULT": {
       await createItemHandler(req, res);
-      break;
     }
   }
 }
