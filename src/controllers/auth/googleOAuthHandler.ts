@@ -31,7 +31,8 @@ export async function googleOAuthHandler(req: Request, res: Response) {
     let user = await getUser({ email });
 
     if (user) {
-      user = await updateUser(user.id, {
+      user = await updateUser({
+        id: user.id,
         firstName: googleUser.given_name,
         lastName: googleUser.family_name,
         email: googleUser.email,

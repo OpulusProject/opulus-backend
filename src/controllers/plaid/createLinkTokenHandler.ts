@@ -19,14 +19,16 @@ export async function createLinkTokenHandler(req: Request, res: Response) {
       return;
     }
 
-    let userToken: string;
+    let userToken = userResponse.plaidUserToken;
 
-    if (userResponse.plaidUserToken) {
-      userToken = userResponse.plaidUserToken;
-    } else {
+    // User does not have an associated Plaid User
+    if (!userToken) {
       const createPlaidUserResponse = await createPlaidUser(userId);
-      userToken = createPlaidUserResponse.data.user_token;
-      await updateUser(userId, { plaidUserToken: userToken });
+      const { user_token: plaidUserToken, user_id: plaidId } =
+        createPlaidUserResponse.data;
+      userToken = plaidUserToken;
+
+      await updateUser({ id: userId, plaidId, plaidUserToken });
     }
 
     const linkTokenResponse = await createLinkToken(userToken, userId);
