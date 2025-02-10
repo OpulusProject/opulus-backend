@@ -2,7 +2,6 @@ import prisma from "@prisma/index";
 
 interface UpdateItem {
   plaidId: string;
-  userId: string;
   accessToken: string;
   institutionId?: string | null;
   institutionName?: string | null;
