@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { WebhookType } from "plaid/dist/api";
 
 import { WebhookInput } from "@schema/webhookSchema";
 
+import { handleLinkWebhook } from "./handleLinkWebhook";
 import { handleTransactionsWebhook } from "./handleTransactionsWebhook";
 import { unhandledWebhook } from "./unhandledWebhook";
 
@@ -15,7 +15,11 @@ export async function handleWebook(
   const { webhook_type: webhookType } = req.body;
 
   switch (webhookType) {
-    case WebhookType.Transactions.toString(): {
+    case "LINK": {
+      await handleLinkWebhook(req, res);
+      break;
+    }
+    case "TRANSACTIONS": {
       await handleTransactionsWebhook(req, res);
       break;
     }
