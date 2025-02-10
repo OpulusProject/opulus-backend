@@ -10,8 +10,9 @@ export const WebhookSchema = object({
     webhook_code: string({
       required_error: "Webhook code is required",
     }),
-    item_id: string({
-      required_error: "Item id is required",
-    }),
+    item_id: string().optional(),
+    link_session_id: string().optional(),
+    link_token: string().optional(),
+    public_token: string().optional(),
   }),
 });

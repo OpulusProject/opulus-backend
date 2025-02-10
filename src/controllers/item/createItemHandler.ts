@@ -1,10 +1,10 @@
-import { User } from "@prisma/client";
 import { Request, Response } from "express";
 
-import { CreateItemInput } from "@schema/itemSchema";
+import { WebhookInput } from "@schema/webhookSchema";
 import { createAccount } from "@services/account/createAccount";
 import { createItem } from "@services/item/createItem";
 import { getItem } from "@services/item/getItem";
+import { getLinkSession } from "@services/linkSession/getLinkSession";
 import { exchangePublicToken } from "@services/plaid/exchangePublicToken";
 import { getInstitutionById } from "@services/plaid/getInstitutionById";
 import { getPlaidAccounts } from "@services/plaid/getPlaidAccounts";
@@ -14,16 +14,15 @@ import { createTransaction } from "@services/transaction/createTransaction";
 import { normalizeTransaction } from "@services/transaction/normalizeTransaction";
 
 export async function createItemHandler(
-  req: Request<object, object, CreateItemInput>,
+  req: Request<object, object, WebhookInput>,
   res: Response,
 ) {
-  const user = res.locals.user as User;
-  const userId = user.id;
-
-  const { publicToken } = req.body;
+  const { public_token: publicToken, link_token: linkToken } = req.body;
 
   try {
-    const exchangePublicTokenResponse = await exchangePublicToken(publicToken);
+    const exchangePublicTokenResponse = await exchangePublicToken(
+      publicToken as string,
+    );
     const accessToken = exchangePublicTokenResponse.data.access_token;
 
     const getPlaidItemResponse = await getPlaidItem(accessToken);
@@ -34,7 +33,7 @@ export async function createItemHandler(
 
     if (institutionId) {
       // Check if item already exists in the database
-      const getItemResponse = await getItem({ userId, institutionId });
+      const getItemResponse = await getItem({ plaidItemId: plaidItem.item_id });
 
       if (getItemResponse) {
         res.status(409).json({
@@ -48,6 +47,19 @@ export async function createItemHandler(
       const institutionResponse = await getInstitutionById(institutionId);
       institutionName = institutionResponse.data.institution.name;
     }
+
+    // Retrieve the link session from the database
+    const linkSessionResponse = await getLinkSession({
+      linkToken: linkToken as string,
+    });
+
+    if (!linkSessionResponse) {
+      res.status(409).json({
+        message: "Link session does not exist",
+      });
+      return;
+    }
+    const userId = linkSessionResponse.userId;
 
     const item = {
       plaidId: plaidItem.item_id,
