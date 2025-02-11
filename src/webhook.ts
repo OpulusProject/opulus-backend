@@ -1,8 +1,8 @@
 import bodyParser from "body-parser";
 import express, { Router } from "express";
 
-import { handleWebook } from "@controllers/webhook/handleWebhook";
 import { verifyWebhook } from "@middleware/verifyWebhook";
+import { handleWebook } from "src/webhook/handleWebhook";
 
 const WEBHOOK_PORT = process.env.WEBHOOK_PORT || 8081;
 
