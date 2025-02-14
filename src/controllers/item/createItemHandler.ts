@@ -10,9 +10,9 @@ import { getInstitutionById } from "@services/plaid/getInstitutionById";
 import { getPlaidAccounts } from "@services/plaid/getPlaidAccounts";
 import { getPlaidItem } from "@services/plaid/getPlaidItem";
 import { transactionsSync } from "@services/plaid/transactionsSync";
-import { createTransaction } from "@services/transaction/createTransaction";
-import { normalizeTransaction } from "@services/transaction/normalizeTransaction";
-import { normalizeAccount } from "src/types/Account/normalizeAccount";
+import { createTransactions } from "@src/services/transaction/createTransactions";
+import { normalizeAccount } from "@src/types/Account/normalizeAccount";
+import { normalizeTransaction } from "@src/types/Transaction/normalizeTransaction";
 
 export async function createItemHandler(
   req: Request<object, object, WebhookInput>,
@@ -82,31 +82,42 @@ export async function createItemHandler(
     // Create accounts in the database at the same time to avoid orphaned items
     const getPlaidAccountsResponse = await getPlaidAccounts(accessToken);
     const plaidAccounts = getPlaidAccountsResponse.data.accounts;
+
     const accounts = plaidAccounts.map((plaidAccount) =>
       normalizeAccount(plaidItem.item_id, plaidAccount),
     );
 
     try {
       await createAccounts(accounts);
-    } catch (accountError) {
+    } catch (accountsError) {
       console.error({
         message: "Failed to create accounts",
         accounts,
-        accountError,
+        accountsError,
       });
     }
 
     // To receive the SYNC_UPDATES_AVAILABLE webhook for an item, we need to sync transactions at least once
     // Note: this first call might return an empty array since its immediately called after the item has been created
     const transactionsSyncReponse = await transactionsSync(item.accessToken);
-    const { added } = transactionsSyncReponse.data;
+    const plaidTransactions = transactionsSyncReponse.data.added;
 
-    for (const transaction of added) {
-      await createTransaction(normalizeTransaction(transaction));
+    const transactions = plaidTransactions.map((plaidTransaction) =>
+      normalizeTransaction(plaidTransaction),
+    );
+
+    try {
+      await createTransactions(transactions);
+    } catch (transactionsError) {
+      console.error({
+        message: "Failed to create transactions",
+        transactions,
+        transactionsError,
+      });
     }
 
     console.log(
-      `${webhookCode} - ${plaidItem.item_id}: ${plaidAccounts.length} accounts added, ${added.length} transactions added`,
+      `${webhookCode} - ${plaidItem.item_id}: ${accounts.length} accounts added, ${transactions.length} transactions added`,
     );
     res.status(200).json({
       message: "Item created successfully",
