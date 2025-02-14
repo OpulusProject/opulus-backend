@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 
 import { WebhookInput } from "@schema/webhookSchema";
-import { createAccount } from "@services/account/createAccount";
+import { createAccounts } from "@services/account/createAccounts";
 import { createItem } from "@services/item/createItem";
 import { getItem } from "@services/item/getItem";
 import { getLinkSession } from "@services/linkSession/getLinkSession";
@@ -12,6 +12,7 @@ import { getPlaidItem } from "@services/plaid/getPlaidItem";
 import { transactionsSync } from "@services/plaid/transactionsSync";
 import { createTransaction } from "@services/transaction/createTransaction";
 import { normalizeTransaction } from "@services/transaction/normalizeTransaction";
+import { normalizeAccount } from "src/types/Account/normalizeAccount";
 
 export async function createItemHandler(
   req: Request<object, object, WebhookInput>,
@@ -76,43 +77,27 @@ export async function createItemHandler(
       institutionName,
     };
 
-    const createdItem = await createItem(item);
+    await createItem(item);
 
     // Create accounts in the database at the same time to avoid orphaned items
     const getPlaidAccountsResponse = await getPlaidAccounts(accessToken);
     const plaidAccounts = getPlaidAccountsResponse.data.accounts;
+    const accounts = plaidAccounts.map((plaidAccount) =>
+      normalizeAccount(plaidItem.item_id, plaidAccount),
+    );
 
-    for (const plaidAccount of plaidAccounts) {
-      try {
-        const accountId = plaidAccount.account_id;
-        const account = {
-          id: accountId,
-          plaidId: plaidAccount.account_id,
-          itemId: createdItem.id,
-          mask: plaidAccount.mask,
-          name: plaidAccount.name,
-          officialName: plaidAccount.official_name,
-          type: plaidAccount.type,
-          subtype: plaidAccount.subtype,
-          availableBalance: plaidAccount.balances.available,
-          currentBalance: plaidAccount.balances.current,
-          limit: plaidAccount.balances.limit,
-          currencyCode:
-            plaidAccount.balances.iso_currency_code ??
-            plaidAccount.balances.unofficial_currency_code,
-        };
-
-        await createAccount(account);
-      } catch (accountError) {
-        console.error({
-          message: `Failed to create account ${plaidAccount.account_id}:`,
-          accountError,
-        });
-        continue;
-      }
+    try {
+      await createAccounts(accounts);
+    } catch (accountError) {
+      console.error({
+        message: "Failed to create accounts",
+        accounts,
+        accountError,
+      });
     }
 
     // To receive the SYNC_UPDATES_AVAILABLE webhook for an item, we need to sync transactions at least once
+    // Note: this first call might return an empty array since its immediately called after the item has been created
     const transactionsSyncReponse = await transactionsSync(item.accessToken);
     const { added } = transactionsSyncReponse.data;
 
