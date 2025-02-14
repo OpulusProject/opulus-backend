@@ -1,17 +1,16 @@
+import { Prisma } from "@prisma/client";
+
 import prisma from "@prisma/index";
+import { Item } from "@src/types/Item/Item";
 
-interface CreateItem {
-  plaidId: string;
-  userId: string;
-  accessToken: string;
-  institutionId?: string | null;
-  institutionName?: string | null;
-}
-
-export async function createItem(item: CreateItem) {
-  return await prisma.item.create({
-    data: {
-      ...item,
-    },
-  });
+export async function createItem(item: Item) {
+  try {
+    return await prisma.item.create({
+      data: item,
+    });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      throw new Error(error.message);
+    }
+  }
 }

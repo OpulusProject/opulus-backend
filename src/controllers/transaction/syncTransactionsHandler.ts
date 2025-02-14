@@ -6,7 +6,7 @@ import { transactionsSync } from "@services/plaid/transactionsSync";
 import { createTransactions } from "@src/services/transaction/createTransactions";
 import { deleteTransactions } from "@src/services/transaction/deleteTransactions";
 import { updateTransactions } from "@src/services/transaction/updateTransactions";
-import { normalizeTransaction } from "src/types/Transaction/normalizeTransaction";
+import { normalizeTransaction } from "@src/types/Transaction/normalizeTransaction";
 
 export async function syncTransactionsHandler(
   req: Request<object, object, WebhookInput>,

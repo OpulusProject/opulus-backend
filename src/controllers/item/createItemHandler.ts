@@ -12,6 +12,7 @@ import { getPlaidItem } from "@services/plaid/getPlaidItem";
 import { transactionsSync } from "@services/plaid/transactionsSync";
 import { createTransactions } from "@src/services/transaction/createTransactions";
 import { normalizeAccount } from "@src/types/Account/normalizeAccount";
+import { normalizeItem } from "@src/types/Item/normalizeItem";
 import { normalizeTransaction } from "@src/types/Transaction/normalizeTransaction";
 
 export async function createItemHandler(
@@ -69,15 +70,13 @@ export async function createItemHandler(
       institutionName = institutionResponse.data.institution.name;
     }
 
-    const item = {
-      plaidId: plaidItem.item_id,
-      userId,
-      accessToken,
-      institutionId,
-      institutionName,
-    };
+    const item = normalizeItem(plaidItem, userId, accessToken, institutionName);
 
-    await createItem(item);
+    try {
+      await createItem(item);
+    } catch (itemError) {
+      throw new Error(`Failed to create item: ${(itemError as Error).message}`);
+    }
 
     // Create accounts in the database at the same time to avoid orphaned items
     const getPlaidAccountsResponse = await getPlaidAccounts(accessToken);
