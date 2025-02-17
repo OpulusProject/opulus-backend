@@ -54,11 +54,6 @@ export async function syncTransactionsHandler(
 
     const { added, modified, removed, transactionCursor } = transactions;
 
-    // todo: some better error handling
-    if (!transactionCursor) {
-      throw new Error("Transaction cursor not found");
-    }
-
     // Update item with latest transactionCursor
     const updatedItem = {
       ...item,
