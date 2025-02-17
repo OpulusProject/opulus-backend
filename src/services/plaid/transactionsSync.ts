@@ -23,6 +23,7 @@ export async function transactionsSync(
       const request: TransactionsSyncRequest = {
         access_token: accessToken,
         cursor: transactionCursor,
+        count: 500,
       };
 
       const transactions = await plaid.transactionsSync(request);
