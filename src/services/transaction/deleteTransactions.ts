@@ -1,12 +1,15 @@
 import { Prisma } from "@prisma/client";
 
 import prisma from "@prisma/index";
-import { Item } from "@src/types/Item/Item";
 
-export async function createItem(item: Item) {
+export async function deleteTransactions(plaidId: string[]) {
   try {
-    return await prisma.item.create({
-      data: item,
+    return await prisma.transaction.deleteMany({
+      where: {
+        plaidId: {
+          in: plaidId,
+        },
+      },
     });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {

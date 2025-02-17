@@ -1,9 +1,10 @@
-//todo: this should go under a types directory
-
 import { Transaction as PlaidTransaction } from "plaid";
 
-// take plaid's definition of a transaction and converts it to ours
-export function normalizeTransaction(transaction: PlaidTransaction) {
+import { Transaction } from "./Transaction";
+
+export function normalizeTransaction(
+  transaction: PlaidTransaction,
+): Transaction {
   return {
     plaidId: transaction.transaction_id,
     accountId: transaction.account_id,

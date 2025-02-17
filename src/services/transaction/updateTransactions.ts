@@ -1,13 +1,12 @@
 import { Prisma } from "@prisma/client";
 
 import prisma from "@prisma/index";
+import { Transaction } from "@src/types/Transaction/Transaction";
 
-export async function deleteTransaction(plaidId: string) {
+export async function updateTransactions(transactions: Transaction[]) {
   try {
-    return await prisma.transaction.delete({
-      where: {
-        plaidId,
-      },
+    return await prisma.transaction.updateMany({
+      data: transactions,
     });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {

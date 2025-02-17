@@ -3,10 +3,10 @@ import { Request, Response } from "express";
 import { WebhookInput } from "@schema/webhookSchema";
 import { getItem } from "@services/item/getItem";
 import { transactionsSync } from "@services/plaid/transactionsSync";
-import { createTransaction } from "@services/transaction/createTransaction";
-import { deleteTransaction } from "@services/transaction/deleteTransaction";
-import { normalizeTransaction } from "@services/transaction/normalizeTransaction";
-import { updateTransaction } from "@services/transaction/updateTransaction";
+import { createTransactions } from "@src/services/transaction/createTransactions";
+import { deleteTransactions } from "@src/services/transaction/deleteTransactions";
+import { updateTransactions } from "@src/services/transaction/updateTransactions";
+import { normalizeTransaction } from "@src/types/Transaction/normalizeTransaction";
 
 export async function syncTransactionsHandler(
   req: Request<object, object, WebhookInput>,
@@ -32,42 +32,48 @@ export async function syncTransactionsHandler(
     const { added, modified, removed } = transactionsSyncReponse.data;
 
     // Create transactions
-    for (const transaction of added) {
-      try {
-        await createTransaction(normalizeTransaction(transaction));
-      } catch (transactionError) {
-        console.error({
-          message: `Failed to create transaction ${transaction.transaction_id}:`,
-          transactionError,
-        });
-        continue;
-      }
+    const addedTransactions = added.map((plaidTransaction) =>
+      normalizeTransaction(plaidTransaction),
+    );
+
+    try {
+      await createTransactions(addedTransactions);
+    } catch (transactionsError) {
+      console.error({
+        message: "Failed to create transactions",
+        addedTransactions,
+        transactionsError,
+      });
     }
 
     // Update transactions
-    for (const transaction of modified) {
-      try {
-        await updateTransaction(normalizeTransaction(transaction));
-      } catch (transactionError) {
-        console.error({
-          message: `Failed to update transaction ${transaction.transaction_id}:`,
-          transactionError,
-        });
-        continue;
-      }
+    const updatedTransactions = modified.map((plaidTransaction) =>
+      normalizeTransaction(plaidTransaction),
+    );
+
+    try {
+      await updateTransactions(updatedTransactions);
+    } catch (transactionsError) {
+      console.error({
+        message: "Failed to update transactions",
+        addedTransactions,
+        transactionsError,
+      });
     }
 
     // Delete transactions
-    for (const transaction of removed) {
-      try {
-        await deleteTransaction(transaction.transaction_id);
-      } catch (transactionError) {
-        console.error({
-          message: `Failed to delete transaction ${transaction.transaction_id}:`,
-          transactionError,
-        });
-        continue;
-      }
+    const removedTransactions = removed.map(
+      (plaidTransaction) => plaidTransaction.transaction_id,
+    );
+
+    try {
+      await deleteTransactions(removedTransactions);
+    } catch (transactionsError) {
+      console.error({
+        message: "Failed to remove transactions",
+        removedTransactions,
+        transactionsError,
+      });
     }
 
     console.log(

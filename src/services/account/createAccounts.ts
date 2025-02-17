@@ -1,12 +1,13 @@
 import { Prisma } from "@prisma/client";
 
 import prisma from "@prisma/index";
-import { Item } from "@src/types/Item/Item";
+import { Account } from "src/types/Account/Account";
 
-export async function createItem(item: Item) {
+export async function createAccounts(accounts: Account[]) {
   try {
-    return await prisma.item.create({
-      data: item,
+    return await prisma.account.createMany({
+      data: accounts,
+      skipDuplicates: true,
     });
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
