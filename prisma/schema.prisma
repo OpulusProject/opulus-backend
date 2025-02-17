@@ -45,6 +45,7 @@ model Item {
   accessToken      String
   institutionId    String?
   institutionName  String?
+  transactionCursor String?
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @default(now())
 
@@ -68,7 +69,7 @@ model Account {
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @default(now())
 
-  item             Item             @relation(fields: [itemId], references: [id])
+  item             Item             @relation(fields: [itemId], references: [plaidId])
   transactions     Transaction[]
 }
 
@@ -95,5 +96,5 @@ model Transaction {
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @default(now())
 
-  account         Account          @relation(fields: [accountId], references: [id])
+  account         Account          @relation(fields: [accountId], references: [plaidId])
 }

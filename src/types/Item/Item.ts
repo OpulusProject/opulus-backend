@@ -4,4 +4,5 @@ export interface Item {
   accessToken: string;
   institutionId?: string | null;
   institutionName?: string | null;
+  transactionCursor?: string;
 }
