@@ -17,6 +17,9 @@ export async function createLinkToken(userToken: string, userId: string) {
     products,
     country_codes,
     language: "en",
+    transactions: {
+      days_requested: 730,
+    },
     webhook: `${WEBHOOK_URL}/webhook`,
   };
 

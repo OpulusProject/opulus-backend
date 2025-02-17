@@ -2,10 +2,14 @@ import { Request, Response } from "express";
 
 import { WebhookInput } from "@schema/webhookSchema";
 import { getItem } from "@services/item/getItem";
-import { transactionsSync } from "@services/plaid/transactionsSync";
+import { createAccounts } from "@src/services/account/createAccounts";
+import { updateItem } from "@src/services/item/updateItem";
+import { getPlaidAccounts } from "@src/services/plaid/getPlaidAccounts";
+import { transactionsSync } from "@src/services/plaid/transactionsSync";
 import { createTransactions } from "@src/services/transaction/createTransactions";
 import { deleteTransactions } from "@src/services/transaction/deleteTransactions";
 import { updateTransactions } from "@src/services/transaction/updateTransactions";
+import { normalizeAccount } from "@src/types/Account/normalizeAccount";
 import { normalizeTransaction } from "@src/types/Transaction/normalizeTransaction";
 
 export async function syncTransactionsHandler(
@@ -27,9 +31,50 @@ export async function syncTransactionsHandler(
       return;
     }
 
-    // Fired when new transactions data becomes available.
-    const transactionsSyncReponse = await transactionsSync(item.accessToken);
-    const { added, modified, removed } = transactionsSyncReponse.data;
+    const getPlaidAccountsResponse = await getPlaidAccounts(item.accessToken);
+    const plaidAccounts = getPlaidAccountsResponse.data.accounts;
+
+    const accounts = plaidAccounts.map((plaidAccount) =>
+      normalizeAccount(item.plaidId, plaidAccount),
+    );
+
+    try {
+      await createAccounts(accounts);
+    } catch (accountsError) {
+      console.error({
+        message: "Failed to create accounts",
+        accounts,
+        accountsError,
+      });
+    }
+
+    const transactions = await transactionsSync(
+      item.accessToken,
+      item.transactionCursor || undefined,
+    );
+
+    const { added, modified, removed, transactionCursor } = transactions;
+
+    // todo: some better error handling
+    if (!transactionCursor) {
+      throw new Error("Transaction cursor not found");
+    }
+
+    // Update item with latest transactionCursor
+    const updatedItem = {
+      ...item,
+      transactionCursor,
+    };
+
+    try {
+      await updateItem(updatedItem);
+    } catch (itemError) {
+      console.error({
+        message: "Failed to update item",
+        updatedItem,
+        itemError,
+      });
+    }
 
     // Create transactions
     const addedTransactions = added.map((plaidTransaction) =>
@@ -77,7 +122,7 @@ export async function syncTransactionsHandler(
     }
 
     console.log(
-      `${webhookCode} - ${plaidItemId}: ${added.length} added, ${modified.length} modified, ${removed.length} removed`,
+      `[TRANSACTIONS WEBHOOK] ${webhookCode} - ${plaidItemId}: ${added.length} added, ${modified.length} modified, ${removed.length} removed`,
     );
     res.status(200).json({
       message: "Transactions synced successfully",

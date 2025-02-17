@@ -12,6 +12,7 @@ export async function handleTransactionsWebhook(
   console.log(`[TRANSACTIONS WEBHOOK] ${webhookCode} - ${plaidItemId}`);
 
   switch (webhookCode) {
+    case "INITIAL_UPDATE":
     case "SYNC_UPDATES_AVAILABLE": {
       await syncTransactionsHandler(req, res);
     }

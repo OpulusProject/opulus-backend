@@ -7,7 +7,6 @@ import { getLinkSession } from "@services/linkSession/getLinkSession";
 import { exchangePublicToken } from "@services/plaid/exchangePublicToken";
 import { getInstitutionById } from "@services/plaid/getInstitutionById";
 import { getPlaidItem } from "@services/plaid/getPlaidItem";
-import { transactionsSync } from "@services/plaid/transactionsSync";
 import { normalizeItem } from "@src/types/Item/normalizeItem";
 
 export async function createItemHandler(
@@ -66,19 +65,8 @@ export async function createItemHandler(
       institutionName = institutionResponse.data.institution.name;
     }
 
-    // To receive the SYNC_UPDATES_AVAILABLE webhook for an item, we need to sync transactions at least once
-    // Assume this first call returns an empty array since its immediately called after the item has been created
-    const transactionsSyncReponse = await transactionsSync(accessToken);
-    const transactionCursor = transactionsSyncReponse.data.next_cursor;
-
     // Create the Item
-    const item = normalizeItem(
-      plaidItem,
-      userId,
-      accessToken,
-      transactionCursor,
-      institutionName,
-    );
+    const item = normalizeItem(plaidItem, userId, accessToken, institutionName);
 
     try {
       await createItem(item);
