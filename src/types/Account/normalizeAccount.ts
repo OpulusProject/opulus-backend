@@ -7,8 +7,8 @@ export function normalizeAccount(
   account: PlaidAccount,
 ): Account {
   return {
-    plaidId: account.account_id,
     itemId,
+    plaidId: account.account_id,
     mask: account.mask,
     name: account.name,
     officialName: account.official_name,

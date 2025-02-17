@@ -1,3 +1,4 @@
+import { Item } from "@prisma/client";
 import { Request, Response } from "express";
 
 import { WebhookInput } from "@schema/webhookSchema";
@@ -70,10 +71,16 @@ export async function createItemHandler(
       institutionName = institutionResponse.data.institution.name;
     }
 
-    const item = normalizeItem(plaidItem, userId, accessToken, institutionName);
+    const normalizedItem = normalizeItem(
+      plaidItem,
+      userId,
+      accessToken,
+      institutionName,
+    );
+    let item;
 
     try {
-      await createItem(item);
+      item = (await createItem(normalizedItem)) as Item;
     } catch (itemError) {
       throw new Error(`Failed to create item: ${(itemError as Error).message}`);
     }
@@ -83,7 +90,7 @@ export async function createItemHandler(
     const plaidAccounts = getPlaidAccountsResponse.data.accounts;
 
     const accounts = plaidAccounts.map((plaidAccount) =>
-      normalizeAccount(plaidItem.item_id, plaidAccount),
+      normalizeAccount(item.id, plaidAccount),
     );
 
     try {
@@ -116,7 +123,7 @@ export async function createItemHandler(
     }
 
     console.log(
-      `${webhookCode} - ${plaidItem.item_id}: ${accounts.length} accounts added, ${transactions.length} transactions added`,
+      `${webhookCode} - ${plaidItem.item_id}: ${accounts.length} accounts added, ${3} transactions added`,
     );
     res.status(200).json({
       message: "Item created successfully",
