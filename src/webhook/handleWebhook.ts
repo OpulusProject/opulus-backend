@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 
 import { WebhookInput } from "@schema/webhookSchema";
 
+import { handleItemWebhook } from "./handleItemWebhook";
 import { handleLinkWebhook } from "./handleLinkWebhook";
 import { handleTransactionsWebhook } from "./handleTransactionsWebhook";
 import { unhandledWebhook } from "./unhandledWebhook";
@@ -15,6 +16,10 @@ export async function handleWebook(
   const { webhook_type: webhookType } = req.body;
 
   switch (webhookType) {
+    case "ITEM": {
+      await handleItemWebhook(req, res);
+      break;
+    }
     case "LINK": {
       await handleLinkWebhook(req, res);
       break;

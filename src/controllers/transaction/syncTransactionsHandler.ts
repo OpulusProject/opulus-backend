@@ -21,11 +21,9 @@ export async function syncTransactionsHandler(
   try {
     const item = await getItem({ plaidItemId });
 
-    // Note: this error should typically never fire, because if the item doesn't exist in our database, it shouldn't exist in Plaid's database.
-    // We need to call /item/remove to remove items from Plaid, and their related webhooks from firing.
     if (!item) {
       res.status(404).json({
-        message: "Item not found",
+        message: "Could not find item ${plaidItemId}",
       });
       return;
     }
