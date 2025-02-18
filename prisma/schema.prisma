@@ -38,6 +38,15 @@ model LinkSession {
   user             User             @relation(fields: [userId], references: [id])
 }
 
+enum ItemStatus {
+  OK
+  ERROR
+  NEW_ACCOUNTS_AVAILABLE
+  PENDING_DISCONNECT
+  PENDING_EXPIRATION
+  USER_PERMISSION_REVOKED
+}
+
 model Item {
   id               String           @id @default(cuid())
   plaidId          String           @unique
@@ -46,6 +55,7 @@ model Item {
   institutionId    String?
   institutionName  String?
   transactionCursor String?
+  status           ItemStatus       @default(OK)
   createdAt        DateTime         @default(now())
   updatedAt        DateTime         @default(now())
 
