@@ -45,8 +45,7 @@ export async function createItemHandler(
     const getPlaidItemResponse = await getPlaidItem(accessToken);
     const plaidItem = getPlaidItemResponse.data.item;
 
-    const institutionId = plaidItem.institution_id;
-    let institutionName: string | undefined;
+    const institutionId = plaidItem.institution_id || "";
 
     if (institutionId) {
       // Check if institution has already been linked to Opulus
@@ -59,14 +58,13 @@ export async function createItemHandler(
         });
         return;
       }
-
-      // Add the institution name to the item
-      const institutionResponse = await getInstitutionById(institutionId);
-      institutionName = institutionResponse.data.institution.name;
     }
 
+    const getInstitutionResponse = await getInstitutionById(institutionId);
+    const institution = getInstitutionResponse.data.institution;
+
     // Create the Item
-    const item = normalizeItem(plaidItem, userId, accessToken, institutionName);
+    const item = normalizeItem(plaidItem, userId, accessToken, institution);
 
     try {
       await createItem(item);

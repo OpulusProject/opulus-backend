@@ -54,6 +54,7 @@ model Item {
   accessToken      String
   institutionId    String?
   institutionName  String?
+  institutionLogo  String?
   transactionCursor String?
   status           ItemStatus       @default(OK)
   createdAt        DateTime         @default(now())
