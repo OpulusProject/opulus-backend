@@ -19,7 +19,7 @@ export async function updateItemStatusHandler(
 
     if (!item) {
       res.status(404).json({
-        message: "Could not find item ${plaidItemId}",
+        message: `Could not find item ${plaidItemId}`,
       });
       return;
     }
