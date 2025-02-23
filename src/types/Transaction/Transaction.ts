@@ -4,8 +4,8 @@ export interface Transaction {
   amount: number;
   currencyCode: string | null;
   pending: boolean;
-  date: string;
-  authorizedDate: string | null;
+  date: Date;
+  authorizedDate: Date | null;
   paymentChannel: string;
   transactionCode: string | null;
   address: string | null;
