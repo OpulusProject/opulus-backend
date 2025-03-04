@@ -18,6 +18,13 @@ export async function syncTransactionsHandler(
 ) {
   const { webhook_code: webhookCode, item_id: plaidItemId } = req.body;
 
+  if (!plaidItemId) {
+    res.status(400).json({
+      message: "plaidItemId is required",
+    });
+    return;
+  }
+
   try {
     const item = await getItem({ plaidItemId });
 

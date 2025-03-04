@@ -15,6 +15,13 @@ export async function updateItemStatusHandler(
   ) as ItemStatus;
 
   try {
+    if (!plaidItemId) {
+      res.status(400).json({
+        message: "plaidItemId is required",
+      });
+      return;
+    }
+
     const item = await getItem({ plaidItemId });
 
     if (!item) {

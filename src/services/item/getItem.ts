@@ -1,29 +1,29 @@
+import { Prisma } from "@prisma/client";
+
 import prisma from "@prisma/index";
 
 export type GetItemFilters = {
-  userId?: string;
-  plaidItemId?: string;
   institutionId?: string;
-};
+} & (
+  | { userId: string; plaidItemId?: never }
+  | { userId?: never; plaidItemId: string }
+);
 
 export async function getItem(filters: GetItemFilters) {
   const { userId, plaidItemId, institutionId } = filters;
 
-  if (userId) {
+  try {
     return await prisma.item.findFirst({
       where: {
         userId,
-        institutionId,
-      },
-    });
-  } else if (plaidItemId) {
-    return await prisma.item.findFirst({
-      where: {
         plaidId: plaidItemId,
         institutionId,
       },
     });
-  } else {
-    throw new Error("userId or plaidId must be provided");
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      throw new Error(error.message);
+    }
+    throw error;
   }
 }
