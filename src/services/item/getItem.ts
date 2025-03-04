@@ -35,6 +35,7 @@ export async function getItem(filters: GetItemFilters) {
 
     return {
       ...item,
+      accounts: undefined,
       availableBalance: item.accounts.reduce(
         (sum, acc) => sum + (acc.availableBalance || 0),
         0,
