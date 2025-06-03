@@ -13,9 +13,9 @@ export async function getItemHandler(req: Request, res: Response) {
     const item = await getItem({ userId, ...filters });
     res.status(200).json(item);
   } catch (error) {
-    console.error("Error fetching items:", error);
+    console.error("Error fetching item:", error);
     res.status(500).json({
-      message: "Could not fetch items",
+      message: "Could not fetch item",
       error: (error as Error).message,
     });
   }
