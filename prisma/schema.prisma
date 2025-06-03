@@ -29,13 +29,13 @@ model User {
 }
 
 model LinkSession {
-  id               String           @id @default(cuid())
+  id               String   @id @default(cuid())
   userId           String
-  linkToken        String           @unique
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
+  linkToken        String   @unique
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  user             User             @relation(fields: [userId], references: [id])
+  user             User     @relation(fields: [userId], references: [id])
 }
 
 enum ItemStatus {
@@ -48,25 +48,25 @@ enum ItemStatus {
 }
 
 model Item {
-  id               String           @id @default(cuid())
-  plaidId          String           @unique
-  userId           String
-  accessToken      String
-  institutionId    String?
-  institutionName  String?
-  institutionLogo  String?
+  id                String      @id @default(cuid())
+  plaidId           String      @unique
+  userId            String
+  accessToken       String
+  institutionId     String?
+  institutionName   String?
+  institutionLogo   String?
   transactionCursor String?
-  status           ItemStatus       @default(OK)
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @default(now())
+  status            ItemStatus  @default(OK)
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @default(now())
 
-  user             User             @relation(fields: [userId], references: [id])
-  accounts         Account[]
+  user              User        @relation(fields: [userId], references: [id])
+  accounts          Account[]
 }
 
 model Account {
-  id               String           @id @default(cuid())
-  plaidId          String           @unique
+  id               String      @id @default(cuid())
+  plaidId          String      @unique
   itemId           String
   mask             String?
   name             String?
@@ -77,35 +77,35 @@ model Account {
   currentBalance   Float?
   limit            Float?
   currencyCode     String?
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @default(now())
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @default(now())
 
-  item             Item             @relation(fields: [itemId], references: [plaidId])
+  item             Item        @relation(fields: [itemId], references: [plaidId])
   transactions     Transaction[]
 }
 
 model Transaction {
-  id              String           @id @default(cuid())
-  plaidId         String           @unique
-  accountId       String
-  amount          Float
-  currencyCode    String?
-  pending         Boolean
-  date            String
-  authorizedDate  String?
-  paymentChannel  String
-  transactionCode String?
-  address         String?
-  city            String?
-  region          String?
-  postalCode      String?
-  country         String?
-  name            String
-  merchantName    String?
-  logoURL         String?
-  website         String?
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @default(now())
+  id                String   @id @default(cuid())
+  plaidId           String   @unique
+  accountId         String
+  amount            Float
+  currencyCode      String?
+  pending           Boolean
+  date              DateTime
+  authorizedDate    DateTime?
+  paymentChannel    String
+  transactionCode   String?
+  address           String?
+  city              String?
+  region            String?
+  postalCode        String?
+  country           String?
+  name              String
+  merchantName      String?
+  logoURL           String?
+  website           String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @default(now())
 
-  account         Account          @relation(fields: [accountId], references: [plaidId])
+  account           Account   @relation(fields: [accountId], references: [plaidId])
 }

@@ -12,8 +12,10 @@ export function normalizeTransaction(
     currencyCode:
       transaction.iso_currency_code ?? transaction.unofficial_currency_code,
     pending: transaction.pending,
-    date: transaction.date,
-    authorizedDate: transaction.authorized_date,
+    date: new Date(transaction.date),
+    authorizedDate: transaction.authorized_date
+      ? new Date(transaction.authorized_date)
+      : null,
     paymentChannel: transaction.payment_channel,
     transactionCode: transaction.transaction_code,
     address: transaction.location?.address,
